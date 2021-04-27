@@ -9,8 +9,9 @@
 ```
 
 
-# 0.1.1
+# 0.1.2
 | Hash | Date | Author | Changes |
 |------|------|--------|---------|
+| faaf633 | 2021-04-27 | Chris Schubert | Adding meta files |
 | 3db6ae0 | 2021-04-27 | Chris Schubert | Initializing organization repository for project. |
 | f8e73df | 2021-04-27 | Chris Schubert | Added README.md |

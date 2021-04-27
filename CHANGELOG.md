@@ -12,5 +12,11 @@
 ## Releasing
 | Hash | Date | Author | Changes |
 |------|------|--------|---------|
+| faaf633 | 2021-04-27 | Chris Schubert | Adding meta files |
+
+
+ ## Tag: v0.1.1
+| Hash | Date | Author | Changes |
+|------|------|--------|---------|
 | 3db6ae0 | 2021-04-27 | Chris Schubert | Initializing organization repository for project. |
 | f8e73df | 2021-04-27 | Chris Schubert | Added README.md |
