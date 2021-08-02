@@ -1,5 +1,4 @@
 ```
-/c/Users/Chris/com.appalachia/appa/cmd/print/RELEASE.sh
  ______   ______   __       ______   ______   ______   ______    
 /\  == \ /\  ___\ /\ \     /\  ___\ /\  __ \ /\  ___\ /\  ___\   
 \ \  __< \ \  __\ \ \ \____\ \  __\ \ \  __ \\ \___  \\ \  __\   
@@ -9,9 +8,9 @@
 ```
 
 
-# 0.1.2
+## Released Changes
+
+
 | Hash | Date | Author | Changes |
 |------|------|--------|---------|
-| faaf633 | 2021-04-27 | Chris Schubert | Adding meta files |
-| 3db6ae0 | 2021-04-27 | Chris Schubert | Initializing organization repository for project. |
-| f8e73df | 2021-04-27 | Chris Schubert | Added README.md |
+| 889a27ed4e221bf314d1d7a945959cecab75bf17 | 2021-08-02 | Chris Schubert | Packaging and publishing updates |
