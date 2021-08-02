@@ -426,7 +426,7 @@ namespace UnityEditor.Rendering.PostProcessing
             m_RectVertices[1] = PointInRect(endPoint, 0f, endPoint);
             m_RectVertices[2] = PointInRect(endPoint, k_CustomToneCurveRangeY, endPoint);
             m_RectVertices[3] = PointInRect(0f, k_CustomToneCurveRangeY, endPoint);
-            UnityEditor.Handles.DrawSolidRectangleWithOutline(m_RectVertices, Color.white * 0.1f, Color.white * 0.4f);
+            Handles.DrawSolidRectangleWithOutline(m_RectVertices, Color.white * 0.1f, Color.white * 0.4f);
 
             // Vertical guides
             if (endPoint < m_CustomToneCurveRect.width / 3)
@@ -437,7 +437,7 @@ namespace UnityEditor.Rendering.PostProcessing
             }
 
             // Label
-            UnityEditor.Handles.Label(m_CustomToneCurveRect.position + Vector2.right, "Custom Tone Curve", EditorStyles.miniLabel);
+            Handles.Label(m_CustomToneCurveRect.position + Vector2.right, "Custom Tone Curve", EditorStyles.miniLabel);
 
             // Draw the acual curve
             var vcount = 0;
@@ -466,8 +466,8 @@ namespace UnityEditor.Rendering.PostProcessing
 
             if (vcount > 1)
             {
-                UnityEditor.Handles.color = Color.white * 0.9f;
-                UnityEditor.Handles.DrawAAPolyLine(2f, vcount, m_CurveVertices);
+                Handles.color = Color.white * 0.9f;
+                Handles.DrawAAPolyLine(2f, vcount, m_CurveVertices);
             }
         }
 
@@ -475,8 +475,8 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             m_LineVertices[0] = PointInRect(x1, y1, rangeX);
             m_LineVertices[1] = PointInRect(x2, y2, rangeX);
-            UnityEditor.Handles.color = Color.white * grayscale;
-            UnityEditor.Handles.DrawAAPolyLine(2f, m_LineVertices);
+            Handles.color = Color.white * grayscale;
+            Handles.DrawAAPolyLine(2f, m_LineVertices);
         }
 
         Vector3 PointInRect(float x, float y, float rangeX)
@@ -617,11 +617,11 @@ namespace UnityEditor.Rendering.PostProcessing
                         DrawBackgroundTexture(innerRect, 1);
 
                     // Bounds
-                    UnityEditor.Handles.color = Color.white * (GUI.enabled ? 1f : 0.5f);
-                    UnityEditor.Handles.DrawSolidRectangleWithOutline(innerRect, Color.clear, new Color(0.8f, 0.8f, 0.8f, 0.5f));
+                    Handles.color = Color.white * (GUI.enabled ? 1f : 0.5f);
+                    Handles.DrawSolidRectangleWithOutline(innerRect, Color.clear, new Color(0.8f, 0.8f, 0.8f, 0.5f));
 
                     // Grid setup
-                    UnityEditor.Handles.color = new Color(1f, 1f, 1f, 0.05f);
+                    Handles.color = new Color(1f, 1f, 1f, 0.05f);
                     int hLines = (int)Mathf.Sqrt(innerRect.width);
                     int vLines = (int)(hLines / (innerRect.width / innerRect.height));
 
@@ -633,7 +633,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     {
                         var offset = i * Vector2.right * gridOffset;
                         offset.x += gridPadding;
-                        UnityEditor.Handles.DrawLine(innerRect.position + offset, new Vector2(innerRect.x, innerRect.yMax - 1) + offset);
+                        Handles.DrawLine(innerRect.position + offset, new Vector2(innerRect.x, innerRect.yMax - 1) + offset);
                     }
 
                     // Horizontal grid
@@ -644,7 +644,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     {
                         var offset = i * Vector2.up * gridOffset;
                         offset.y += gridPadding;
-                        UnityEditor.Handles.DrawLine(innerRect.position + offset, new Vector2(innerRect.xMax - 1, innerRect.y) + offset);
+                        Handles.DrawLine(innerRect.position + offset, new Vector2(innerRect.xMax - 1, innerRect.y) + offset);
                     }
                 }
 
@@ -658,11 +658,11 @@ namespace UnityEditor.Rendering.PostProcessing
                 if (Event.current.type == EventType.Repaint)
                 {
                     // Borders
-                    UnityEditor.Handles.color = Color.black;
-                    UnityEditor.Handles.DrawLine(new Vector2(rect.x, rect.y - 18f), new Vector2(rect.xMax, rect.y - 18f));
-                    UnityEditor.Handles.DrawLine(new Vector2(rect.x, rect.y - 19f), new Vector2(rect.x, rect.yMax));
-                    UnityEditor.Handles.DrawLine(new Vector2(rect.x, rect.yMax), new Vector2(rect.xMax, rect.yMax));
-                    UnityEditor.Handles.DrawLine(new Vector2(rect.xMax, rect.yMax), new Vector2(rect.xMax, rect.y - 18f));
+                    Handles.color = Color.black;
+                    Handles.DrawLine(new Vector2(rect.x, rect.y - 18f), new Vector2(rect.xMax, rect.y - 18f));
+                    Handles.DrawLine(new Vector2(rect.x, rect.y - 19f), new Vector2(rect.x, rect.yMax));
+                    Handles.DrawLine(new Vector2(rect.x, rect.yMax), new Vector2(rect.xMax, rect.yMax));
+                    Handles.DrawLine(new Vector2(rect.xMax, rect.yMax), new Vector2(rect.xMax, rect.y - 18f));
 
                     bool editable = m_CurveEditor.GetCurveState(currentCurveRawProp).editable;
                     string editableString = editable ? string.Empty : "(Not Overriding)\n";

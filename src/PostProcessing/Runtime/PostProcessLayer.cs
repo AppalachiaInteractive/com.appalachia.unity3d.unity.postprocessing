@@ -85,7 +85,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// by the engine. This has less overhead and will improve performance on lower-end platforms
         /// (like mobiles) but breaks compatibility with legacy image effect that use OnRenderImage.
         /// </summary>
-        public bool finalBlitToCameraTarget;
+        public bool finalBlitToCameraTarget = false;
 
         /// <summary>
         /// The anti-aliasing method to use for this camera. By default it's set to <c>None</c>.
@@ -130,14 +130,14 @@ namespace UnityEngine.Rendering.PostProcessing
         PostProcessResources m_OldResources;
 
         // UI states
-        [Scripting.Preserve]
+        [UnityEngine.Scripting.Preserve]
         [SerializeField]
         bool m_ShowToolkit;
 
 //custom-begin: autofocus
         public Object depthOfFieldAutoFocus;
 //custom-end
-        [Scripting.Preserve]
+        [UnityEngine.Scripting.Preserve]
         [SerializeField]
         bool m_ShowCustomSorter;
 
@@ -145,7 +145,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// If <c>true</c>, it will stop applying post-processing effects just before color grading
         /// is applied. This is used internally to export to EXR without color grading.
         /// </summary>
-        public bool breakBeforeColorGrading;
+        public bool breakBeforeColorGrading = false;
 
         // Pre-ordered custom user effects
         // These are automatically populated and made to work properly with the serialization
@@ -211,11 +211,11 @@ namespace UnityEngine.Rendering.PostProcessing
         LogHistogram m_LogHistogram;
 
         bool m_SettingsUpdateNeeded = true;
-        bool m_IsRenderingInSceneView;
+        bool m_IsRenderingInSceneView = false;
 
         TargetPool m_TargetPool;
 
-        bool m_NaNKilled;
+        bool m_NaNKilled = false;
 
         private const string _PRF_PFX = nameof(PostProcessLayer) + ".";
 
@@ -290,10 +290,10 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             using (_PRF_OnRenderImage.Auto())
             {
-                if (finalBlitToCameraTarget && DynamicResolutionAllowsFinalBlitToCameraTarget())
-                    RenderTexture.active = dst; // silence warning
-                else
-                    Graphics.Blit(src, dst);
+            if (finalBlitToCameraTarget && !m_CurrentContext.stereoActive && DynamicResolutionAllowsFinalBlitToCameraTarget())
+                RenderTexture.active = dst; // silence warning
+            else
+                Graphics.Blit(src, dst);
             }
         }
 #endif
@@ -469,27 +469,29 @@ namespace UnityEngine.Rendering.PostProcessing
                 // We also need to force reset the non-jittered projection matrix here as it's not done
                 // when ResetProjectionMatrix() is called and will break transparent rendering if TAA
                 // is switched off and the FOV or any other camera property changes.
-
+            if (m_CurrentContext.IsTemporalAntialiasingActive())
+            {
 #if UNITY_2018_2_OR_NEWER
                 if (!m_Camera.usePhysicalProperties)
 #endif
-                    m_Camera.ResetProjectionMatrix();
-                m_Camera.nonJitteredProjectionMatrix = m_Camera.projectionMatrix;
-
-#if ENABLE_VR
-                if (m_Camera.stereoEnabled)
-                {
-                    m_Camera.ResetStereoProjectionMatrices();
-                    Shader.SetGlobalFloat(ShaderIDs.RenderViewportScaleFactor, XRSettings.renderViewportScale);
-                }
-                else
-#endif
-                {
-                    Shader.SetGlobalFloat(ShaderIDs.RenderViewportScaleFactor, 1.0f);
-                }
-
-                BuildCommandBuffers();
+                m_Camera.ResetProjectionMatrix();
             }
+            m_Camera.nonJitteredProjectionMatrix = m_Camera.projectionMatrix;
+
+#if (ENABLE_VR_MODULE && ENABLE_VR)
+            if (m_Camera.stereoEnabled)
+            {
+                m_Camera.ResetStereoProjectionMatrices();
+                Shader.SetGlobalFloat(ShaderIDs.RenderViewportScaleFactor, XRSettings.renderViewportScale);
+            }
+            else
+#endif
+            {
+                Shader.SetGlobalFloat(ShaderIDs.RenderViewportScaleFactor, 1.0f);
+            }
+
+            BuildCommandBuffers();
+        }
         }
 
         private static readonly ProfilerMarker _PRF_OnPreRender = new ProfilerMarker(_PRF_PFX + nameof(OnPreRender));
@@ -592,6 +594,10 @@ namespace UnityEngine.Rendering.PostProcessing
                 var ssrRenderer = ssrBundle.renderer;
                 bool isScreenSpaceReflectionsActive = ssrSettings.IsEnabledAndSupported(context);
 
+#if UNITY_2019_1_OR_NEWER
+            if (context.stereoActive)
+                context.UpdateSinglePassStereoState(context.IsTemporalAntialiasingActive(), aoSupported, isScreenSpaceReflectionsActive);
+#endif
                 // Ambient-only AO is a special case and has to be done in separate command buffers
                 if (isAmbientOcclusionDeferred)
                 {
@@ -658,16 +664,23 @@ namespace UnityEngine.Rendering.PostProcessing
                     cmd.ReleaseTemporaryRT(srcTarget);
                 }
 
-                // Post-transparency stack
-                int tempRt = -1;
-                bool forceNanKillPass = (!m_NaNKilled && stopNaNPropagation && RuntimeUtilities.isFloatingPointFormat(sourceFormat));
-                if (RequiresInitialBlit(m_Camera, context) || forceNanKillPass)
-                {
-                    tempRt = m_TargetPool.Get();
-                    context.GetScreenSpaceTemporaryRT(m_LegacyCmdBuffer, tempRt, 0, sourceFormat, RenderTextureReadWrite.sRGB);
-                    m_LegacyCmdBuffer.BuiltinBlit(cameraTarget, tempRt, RuntimeUtilities.copyStdMaterial, stopNaNPropagation ? 1 : 0);
-                    if (!m_NaNKilled)
-                        m_NaNKilled = stopNaNPropagation;
+            // Post-transparency stack
+            int tempRt = -1;
+            bool forceNanKillPass = (!m_NaNKilled && stopNaNPropagation && RuntimeUtilities.isFloatingPointFormat(sourceFormat));
+            bool vrSinglePassInstancingEnabled = context.stereoActive && context.numberOfEyes > 1 && context.stereoRenderingMode == PostProcessRenderContext.StereoRenderingMode.SinglePassInstanced;
+            if (!vrSinglePassInstancingEnabled && (RequiresInitialBlit(m_Camera, context) || forceNanKillPass))
+            {
+                int width = context.width;
+#if UNITY_2019_1_OR_NEWER && ENABLE_VR_MODULE && ENABLE_VR
+                var xrDesc = XRSettings.eyeTextureDesc;
+                if (context.stereoActive && context.stereoRenderingMode == PostProcessRenderContext.StereoRenderingMode.SinglePass)
+                    width = xrDesc.width;
+#endif
+                tempRt = m_TargetPool.Get();
+                context.GetScreenSpaceTemporaryRT(m_LegacyCmdBuffer, tempRt, 0, sourceFormat, RenderTextureReadWrite.sRGB, FilterMode.Bilinear, width);
+                m_LegacyCmdBuffer.BuiltinBlit(cameraTarget, tempRt, RuntimeUtilities.copyStdMaterial, stopNaNPropagation ? 1 : 0);
+                if (!m_NaNKilled)
+                    m_NaNKilled = stopNaNPropagation;
 
                     context.source = tempRt;
                 }
@@ -679,18 +692,18 @@ namespace UnityEngine.Rendering.PostProcessing
                 context.destination = cameraTarget;
 
 #if UNITY_2019_1_OR_NEWER
-                if (finalBlitToCameraTarget && !RuntimeUtilities.scriptableRenderPipelineActive && DynamicResolutionAllowsFinalBlitToCameraTarget())
+            if (finalBlitToCameraTarget && !m_CurrentContext.stereoActive && !RuntimeUtilities.scriptableRenderPipelineActive && DynamicResolutionAllowsFinalBlitToCameraTarget())
+            {
+                if (m_Camera.targetTexture)
                 {
-                    if (m_Camera.targetTexture)
-                    {
-                        context.destination = m_Camera.targetTexture.colorBuffer;
-                    }
-                    else
-                    {
-                        context.flip = true;
-                        context.destination = Display.main.colorBuffer;
-                    }
+                    context.destination = m_Camera.targetTexture.colorBuffer;
                 }
+                else
+                {
+                    context.flip = true;
+                    context.destination = Display.main.colorBuffer;
+                }
+            }
 #endif
 
                 context.command = m_LegacyCmdBuffer;
@@ -910,11 +923,11 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 // Juggling required when a scene with post processing is loaded from an asset bundle
                 // See #1148230
-                if (m_OldResources != m_Resources)
-                {
-                    RuntimeUtilities.UpdateResources(m_Resources);
-                    m_OldResources = m_Resources;
-                }
+            if (m_OldResources != m_Resources || !RuntimeUtilities.isValidResources())
+            {
+                RuntimeUtilities.UpdateResources(m_Resources);
+                m_OldResources = m_Resources;
+            }
 
                 m_IsRenderingInSceneView = context.camera.cameraType == CameraType.SceneView;
                 context.isSceneView = m_IsRenderingInSceneView;
@@ -1282,10 +1295,10 @@ namespace UnityEngine.Rendering.PostProcessing
                     context.GetScreenSpaceTemporaryRT(cmd, tempTarget, 0, context.sourceFormat);
                     context.destination = tempTarget;
 
-                    // Handle FXAA's keep alpha mode
-                    if (antialiasingMode == Antialiasing.FastApproximateAntialiasing && !fastApproximateAntialiasing.keepAlpha)
-                        uberSheet.properties.SetFloat(ShaderIDs.LumaInAlpha, 1f);
-                }
+                // Handle FXAA's keep alpha mode
+                if (antialiasingMode == Antialiasing.FastApproximateAntialiasing && !fastApproximateAntialiasing.keepAlpha && HasAlpha(context.sourceFormat))
+                    uberSheet.properties.SetFloat(ShaderIDs.LumaInAlpha, 1f);
+            }
 
                 // Depth of field final combination pass used to be done in Uber which led to artifacts
                 // when used at the same time as Bloom (because both effects used the same source, so
@@ -1399,9 +1412,14 @@ namespace UnityEngine.Rendering.PostProcessing
                             : "FXAA"
                         );
 
+                    if (HasAlpha(context.sourceFormat))
+                    {
                         if (fastApproximateAntialiasing.keepAlpha)
                             uberSheet.EnableKeyword("FXAA_KEEP_ALPHA");
                     }
+                    else
+                        uberSheet.EnableKeyword("FXAA_NO_ALPHA");
+                }
                     else if (antialiasingMode == Antialiasing.SubpixelMorphologicalAntialiasing && subpixelMorphologicalAntialiasing.IsSupported())
                     {
                         tempTarget = m_TargetPool.Get();
@@ -1479,6 +1497,22 @@ namespace UnityEngine.Rendering.PostProcessing
             bool autoExpo = GetBundle<AutoExposure>().settings.IsEnabledAndSupported(context);
             bool lightMeter = debugLayer.lightMeter.IsRequestedAndSupported(context);
             return autoExpo || lightMeter;
+        }
+
+        static bool HasAlpha(RenderTextureFormat format)
+        {
+            return
+                format == RenderTextureFormat.ARGB32
+                || format == RenderTextureFormat.ARGBHalf
+                || format == RenderTextureFormat.ARGB4444
+                || format == RenderTextureFormat.ARGB1555
+                || format == RenderTextureFormat.ARGB2101010
+                || format == RenderTextureFormat.ARGB64
+                || format == RenderTextureFormat.ARGBFloat
+                || format == RenderTextureFormat.ARGBInt
+                || format == RenderTextureFormat.BGRA32
+                || format == RenderTextureFormat.RGBAUShort
+                || format == RenderTextureFormat.BGRA10101010_XR;
         }
     }
 }

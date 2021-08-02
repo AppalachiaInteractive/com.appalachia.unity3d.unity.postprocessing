@@ -90,8 +90,8 @@ namespace UnityEngine.Rendering.PostProcessing
                 && context.resources.computeShaders.exposureHistogram;
         }
     }
-    
-    [Scripting.Preserve]
+
+    [UnityEngine.Scripting.Preserve]
     internal sealed class AutoExposureRenderer : PostProcessEffectRenderer<AutoExposure>
     {
         const int k_NumEyes = 2;
@@ -174,7 +174,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 int pp = m_AutoExposurePingPong[context.xrActiveEye];
                 var src = m_AutoExposurePool[context.xrActiveEye][++pp % 2];
                 var dst = m_AutoExposurePool[context.xrActiveEye][++pp % 2];
-                
+
                 cmd.SetComputeTextureParam(compute, kernel, "_Source", src);
                 cmd.SetComputeTextureParam(compute, kernel, "_Destination", dst);
                 cmd.DispatchCompute(compute, kernel, 1, 1, 1);

@@ -13,7 +13,7 @@ namespace UnityEditor.Rendering.PostProcessing
             internal const string currentCurve         = "PostProcessing.Curve.Current";
         }
 
-        static bool m_Loaded;
+        static bool m_Loaded = false;
 
         static float m_TrackballSensitivity = 0.2f;
         internal static float trackballSensitivity
@@ -29,14 +29,14 @@ namespace UnityEditor.Rendering.PostProcessing
             set { TrySave(ref m_VolumeGizmoColor, value, Keys.volumeGizmoColor); }
         }
 
-        static int m_CurrentChannelMixer;
+        static int m_CurrentChannelMixer = 0;
         internal static int currentChannelMixer
         {
             get { return m_CurrentChannelMixer; }
             set { TrySave(ref m_CurrentChannelMixer, value, Keys.currentChannelMixer); }
         }
 
-        static int m_CurrentCurve;
+        static int m_CurrentCurve = 0;
         internal static int currentCurve
         {
             get { return m_CurrentCurve; }
@@ -57,12 +57,14 @@ namespace UnityEditor.Rendering.PostProcessing
                 guiHandler = searchContext => OpenGUI()
             };
         }
+
         #else
         [PreferenceItem("Post-processing")]
         static void PreferenceGUI()
         {
             OpenGUI();
         }
+
         #endif
 
         static void OpenGUI()

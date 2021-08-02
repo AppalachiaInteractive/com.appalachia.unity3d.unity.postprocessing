@@ -3,11 +3,11 @@ using UnityEngine.Assertions;
 
 namespace UnityEngine.Rendering.PostProcessing
 {
-    [Scripting.Preserve]
+    [UnityEngine.Scripting.Preserve]
     [Serializable]
     internal sealed class Dithering
     {
-        int m_NoiseTextureIndex;
+        int m_NoiseTextureIndex = 0;
         System.Random m_Random = new System.Random(1234);
 
         internal void Render(PostProcessRenderContext context)

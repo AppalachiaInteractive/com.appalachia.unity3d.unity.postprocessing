@@ -142,7 +142,7 @@ namespace UnityEngine.Rendering.PostProcessing
             /// <summary>
             /// Should we remap depth to a linear range?
             /// </summary>
-            public bool linearDepth;
+            public bool linearDepth = false;
 
             /// <summary>
             /// The intensity of motion vector colors.

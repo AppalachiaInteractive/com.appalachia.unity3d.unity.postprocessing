@@ -57,17 +57,17 @@ namespace UnityEngine.Rendering.PostProcessing
             return enabled.value
                 && !Mathf.Approximately(intensity, 0f)
                 && (intensityX > 0f || intensityY > 0f)
-                && !RuntimeUtilities.isVREnabled;
+                && !context.stereoActive;
         }
     }
 
-    [Scripting.Preserve]
+    [UnityEngine.Scripting.Preserve]
     internal sealed class LensDistortionRenderer : PostProcessEffectRenderer<LensDistortion>
     {
         public override void Render(PostProcessRenderContext context)
         {
             var sheet = context.uberSheet;
-            
+
             float amount = 1.6f * Math.Max(Mathf.Abs(settings.intensity.value), 1f);
             float theta = Mathf.Deg2Rad * Math.Min(160f, amount);
             float sigma = 2f * Mathf.Tan(theta * 0.5f);

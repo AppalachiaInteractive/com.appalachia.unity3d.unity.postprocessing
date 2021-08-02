@@ -26,7 +26,14 @@ namespace UnityEditor.Rendering.PostProcessing
             {
                 var t = EditorUserBuildSettings.activeBuildTarget;
                 return t == BuildTarget.PS4
+#if UNITY_PS5
+                    || t == BuildTarget.PS5
+#endif
                     || t == BuildTarget.XboxOne
+#if UNITY_GAMECORE
+                    || t == BuildTarget.GameCoreXboxSeries
+                    || t == BuildTarget.GameCoreXboxOne
+#endif
                     || t == BuildTarget.Switch;
             }
         }
@@ -47,9 +54,9 @@ namespace UnityEditor.Rendering.PostProcessing
 #endif
 #if !UNITY_2018_3_OR_NEWER
                     || t == BuildTarget.N3DS
-                    || t == BuildTarget.PSP2          
+                    || t == BuildTarget.PSP2
 #endif
-                    ;
+                ;
             }
         }
 
@@ -81,10 +88,10 @@ namespace UnityEditor.Rendering.PostProcessing
 
             // Look for all the valid attribute decorators
             var types = RuntimeUtilities.GetAllTypesDerivedFrom<AttributeDecorator>()
-                            .Where(
-                                t => t.IsDefined(typeof(DecoratorAttribute), false)
-                                  && !t.IsAbstract
-                            );
+                .Where(
+                    t => t.IsDefined(typeof(DecoratorAttribute), false)
+                    && !t.IsAbstract
+                );
 
             // Store them
             foreach (var type in types)
@@ -251,7 +258,11 @@ namespace UnityEditor.Rendering.PostProcessing
             toggleRect.height = 13f;
 
             var menuIcon = Styling.paneOptionsIcon;
+#if UNITY_2019_3_OR_NEWER
+            var menuRect = new Rect(labelRect.xMax + 4f, labelRect.y, menuIcon.width, menuIcon.height);
+#else
             var menuRect = new Rect(labelRect.xMax + 4f, labelRect.y + 4f, menuIcon.width, menuIcon.height);
+#endif
 
             // Background rect should be full-width
             backgroundRect.xMin = 0f;

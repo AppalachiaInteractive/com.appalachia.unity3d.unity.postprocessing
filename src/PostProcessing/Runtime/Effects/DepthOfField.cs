@@ -3,30 +3,30 @@ using System;
 namespace UnityEngine.Rendering.PostProcessing
 {
     /// <summary>
-         /// Convolution kernel size for the Depth of Field effect.
-         /// </summary>
-         public enum KernelSize
-         {
-             /// <summary>
-             /// Small filter.
-             /// </summary>
-             Small,
-     
-             /// <summary>
-             /// Medium filter.
-             /// </summary>
-             Medium,
-     
-             /// <summary>
-             /// Large filter.
-             /// </summary>
-             Large,
-     
-             /// <summary>
-             /// Very large filter.
-             /// </summary>
-             VeryLarge
-         }
+    /// Convolution kernel size for the Depth of Field effect.
+    /// </summary>
+    public enum KernelSize
+    {
+        /// <summary>
+        /// Small filter.
+        /// </summary>
+        Small,
+
+        /// <summary>
+        /// Medium filter.
+        /// </summary>
+        Medium,
+
+        /// <summary>
+        /// Large filter.
+        /// </summary>
+        Large,
+
+        /// <summary>
+        /// Very large filter.
+        /// </summary>
+        VeryLarge
+    }
 
     /// <summary>
     /// A volume parameter holding a <see cref="KernelSize"/> value.
@@ -81,7 +81,7 @@ namespace UnityEngine.Rendering.PostProcessing
         }
     }
 
-    [Scripting.Preserve]
+    [UnityEngine.Scripting.Preserve]
     // TODO: Doesn't play nice with alpha propagation, see if it can be fixed without killing performances
     internal sealed class DepthOfFieldRenderer : PostProcessEffectRenderer<DepthOfField>
     {
@@ -203,7 +203,7 @@ namespace UnityEngine.Rendering.PostProcessing
             if (context.IsTemporalAntialiasingActive())
             {
                 float motionBlending = context.temporalAntialiasing.motionBlending;
-                float blend = m_ResetHistory ? 0f : motionBlending; // UnityEditor.Handles first frame blending
+                float blend = m_ResetHistory ? 0f : motionBlending; // Handles first frame blending
                 var jitter = context.temporalAntialiasing.jitter;
 
                 sheet.properties.SetVector(ShaderIDs.TaaParams, new Vector3(jitter.x, jitter.y, blend));

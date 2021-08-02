@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Experimental.Rendering;
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -172,7 +173,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 if (context != null)
                 {
                     state &= context.resources.shaders.scalableAO
-                          && context.resources.shaders.scalableAO.isSupported;
+                        && context.resources.shaders.scalableAO.isSupported;
                 }
             }
             else if (mode.value == AmbientOcclusionMode.MultiScaleVolumetricObscurance)
@@ -180,18 +181,18 @@ namespace UnityEngine.Rendering.PostProcessing
                 if (context != null)
                 {
                     state &= context.resources.shaders.multiScaleAO
-                          && context.resources.shaders.multiScaleAO.isSupported
-                          && context.resources.computeShaders.multiScaleAODownsample1
-                          && context.resources.computeShaders.multiScaleAODownsample2
-                          && context.resources.computeShaders.multiScaleAORender
-                          && context.resources.computeShaders.multiScaleAOUpsample;
+                        && context.resources.shaders.multiScaleAO.isSupported
+                        && context.resources.computeShaders.multiScaleAODownsample1
+                        && context.resources.computeShaders.multiScaleAODownsample2
+                        && context.resources.computeShaders.multiScaleAORender
+                        && context.resources.computeShaders.multiScaleAOUpsample;
                 }
 
                 state &= SystemInfo.supportsComputeShaders
-                      && !RuntimeUtilities.isAndroidOpenGL
-                      && RenderTextureFormat.RFloat.IsSupported()
-                      && RenderTextureFormat.RHalf.IsSupported()
-                      && RenderTextureFormat.R8.IsSupported();
+                    && !RuntimeUtilities.isAndroidOpenGL
+                    && SystemInfo.IsFormatSupported(GraphicsFormat.R32_SFloat, FormatUsage.Render | FormatUsage.Sparse)
+                    && SystemInfo.IsFormatSupported(GraphicsFormat.R16_SFloat, FormatUsage.Render | FormatUsage.Sparse)
+                    && SystemInfo.IsFormatSupported(GraphicsFormat.R8_UNorm, FormatUsage.Render | FormatUsage.Sparse);
             }
 
             return state;
@@ -206,8 +207,8 @@ namespace UnityEngine.Rendering.PostProcessing
         void CompositeAmbientOnly(PostProcessRenderContext context);
         void Release();
     }
-    
-    [Scripting.Preserve]
+
+    [UnityEngine.Scripting.Preserve]
     internal sealed class AmbientOcclusionRenderer : PostProcessEffectRenderer<AmbientOcclusion>
     {
         IAmbientOcclusionMethod[] m_Methods;

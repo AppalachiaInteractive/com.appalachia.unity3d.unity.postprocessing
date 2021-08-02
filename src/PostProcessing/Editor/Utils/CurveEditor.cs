@@ -106,21 +106,21 @@ namespace UnityEditor.Rendering.PostProcessing
             internal MenuAction(SerializedProperty curve)
             {
                 this.curve = curve;
-                index = -1;
-                position = Vector3.zero;
+                this.index = -1;
+                this.position = Vector3.zero;
             }
 
             internal MenuAction(SerializedProperty curve, int index)
             {
                 this.curve = curve;
                 this.index = index;
-                position = Vector3.zero;
+                this.position = Vector3.zero;
             }
 
             internal MenuAction(SerializedProperty curve, Vector3 position)
             {
                 this.curve = curve;
-                index = -1;
+                this.index = -1;
                 this.position = position;
             }
         }
@@ -148,7 +148,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
         public CurveEditor()
             : this(Settings.defaultSettings)
-        { }
+        {}
 
         public CurveEditor(Settings settings)
         {
@@ -274,20 +274,20 @@ namespace UnityEditor.Rendering.PostProcessing
             if (!state.editable || !GUI.enabled)
                 color.a *= 0.5f;
 
-            UnityEditor.Handles.color = color;
+            Handles.color = color;
             var bounds = settings.bounds;
 
             if (length == 0)
             {
                 var p1 = CurveToCanvas(new Vector3(bounds.xMin, state.zeroKeyConstantValue));
                 var p2 = CurveToCanvas(new Vector3(bounds.xMax, state.zeroKeyConstantValue));
-                UnityEditor.Handles.DrawAAPolyLine(state.width, p1, p2);
+                Handles.DrawAAPolyLine(state.width, p1, p2);
             }
             else if (length == 1)
             {
                 var p1 = CurveToCanvas(new Vector3(bounds.xMin, keys[0].value));
                 var p2 = CurveToCanvas(new Vector3(bounds.xMax, keys[0].value));
-                UnityEditor.Handles.DrawAAPolyLine(state.width, p1, p2);
+                Handles.DrawAAPolyLine(state.width, p1, p2);
             }
             else
             {
@@ -300,9 +300,9 @@ namespace UnityEditor.Rendering.PostProcessing
                     if (float.IsInfinity(prevKey.outTangent) || float.IsInfinity(key.inTangent))
                     {
                         var s = HardSegment(prevKey, key);
-                        UnityEditor.Handles.DrawAAPolyLine(state.width, s[0], s[1], s[2]);
+                        Handles.DrawAAPolyLine(state.width, s[0], s[1], s[2]);
                     }
-                    else UnityEditor.Handles.DrawBezier(pts[0], pts[3], pts[1], pts[2], color, null, state.width);
+                    else Handles.DrawBezier(pts[0], pts[3], pts[1], pts[2], color, null, state.width);
 
                     prevKey = key;
                 }
@@ -320,15 +320,15 @@ namespace UnityEditor.Rendering.PostProcessing
                         if (float.IsInfinity(p1.outTangent) || float.IsInfinity(p2.inTangent))
                         {
                             var s = HardSegment(p1, p2);
-                            UnityEditor.Handles.DrawAAPolyLine(state.width, s[0], s[1], s[2]);
+                            Handles.DrawAAPolyLine(state.width, s[0], s[1], s[2]);
                         }
-                        else UnityEditor.Handles.DrawBezier(pts[0], pts[3], pts[1], pts[2], color, null, state.width);
+                        else Handles.DrawBezier(pts[0], pts[3], pts[1], pts[2], color, null, state.width);
                     }
                     else
                     {
                         var p1 = CurveToCanvas(new Vector3(bounds.xMin, keys[0].value));
                         var p2 = CurveToCanvas(keys[0]);
-                        UnityEditor.Handles.DrawAAPolyLine(state.width, p1, p2);
+                        Handles.DrawAAPolyLine(state.width, p1, p2);
                     }
                 }
 
@@ -344,15 +344,15 @@ namespace UnityEditor.Rendering.PostProcessing
                         if (float.IsInfinity(p1.outTangent) || float.IsInfinity(p2.inTangent))
                         {
                             var s = HardSegment(p1, p2);
-                            UnityEditor.Handles.DrawAAPolyLine(state.width, s[0], s[1], s[2]);
+                            Handles.DrawAAPolyLine(state.width, s[0], s[1], s[2]);
                         }
-                        else UnityEditor.Handles.DrawBezier(pts[0], pts[3], pts[1], pts[2], color, null, state.width);
+                        else Handles.DrawBezier(pts[0], pts[3], pts[1], pts[2], color, null, state.width);
                     }
                     else
                     {
                         var p1 = CurveToCanvas(keys[length - 1]);
                         var p2 = CurveToCanvas(new Vector3(bounds.xMax, keys[length - 1].value));
-                        UnityEditor.Handles.DrawAAPolyLine(state.width, p1, p2);
+                        Handles.DrawAAPolyLine(state.width, p1, p2);
                     }
                 }
             }
@@ -368,7 +368,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             float enabledFactor = GUI.enabled ? 1f : 0.8f;
 
-            // UnityEditor.Handles & keys
+            // Handles & keys
             for (int k = 0; k < length; k++)
             {
                 bool isCurrentlySelectedKeyframe = k == m_SelectedKeyframeIndex;
@@ -400,17 +400,17 @@ namespace UnityEditor.Rendering.PostProcessing
                         // Tangents
                         if (isCurrentlySelectedCurve && (!state.onlyShowHandlesOnSelection || (state.onlyShowHandlesOnSelection && isCurrentlySelectedKeyframe)))
                         {
-                            UnityEditor.Handles.color = selectedColor * enabledFactor;
+                            Handles.color = selectedColor * enabledFactor;
 
                             if (k > 0 || state.loopInBounds)
                             {
-                                UnityEditor.Handles.DrawAAPolyLine(state.handleWidth, pos, inTangent);
+                                Handles.DrawAAPolyLine(state.handleWidth, pos, inTangent);
                                 EditorGUI.DrawRect(offset.Remove(inTangentHitRect), selectedColor);
                             }
 
                             if (k < length - 1 || state.loopInBounds)
                             {
-                                UnityEditor.Handles.DrawAAPolyLine(state.handleWidth, pos, outTangent);
+                                Handles.DrawAAPolyLine(state.handleWidth, pos, outTangent);
                                 EditorGUI.DrawRect(offset.Remove(outTangentHitrect), selectedColor);
                             }
                         }
@@ -502,7 +502,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 }
             }
 
-            UnityEditor.Handles.color = Color.white;
+            Handles.color = Color.white;
             SaveCurve(curve, animCurve);
         }
 
