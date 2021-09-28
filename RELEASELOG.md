@@ -10,7 +10,7 @@
 
 ## Released Changes
 
-
+`0.1.4`
 | Hash | Date | Author | Changes |
 |------|------|--------|---------|
-| 889a27ed4e221bf314d1d7a945959cecab75bf17 | 2021-08-02 | Chris Schubert | Packaging and publishing updates |
+

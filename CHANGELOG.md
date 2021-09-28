@@ -12,6 +12,12 @@
 ## Releasing
 | Hash | Date | Author | Changes |
 |------|------|--------|---------|
+| 9898167150608efca67eaab8043ac411571d857e | 2021-09-28 | Chris Schubert | Updating packaging and publishing npm strategy and package.json |
+
+
+ ## Tag: `v0.1.3`
+| Hash | Date | Author | Changes |
+|------|------|--------|---------|
 | 889a27ed4e221bf314d1d7a945959cecab75bf17 | 2021-08-02 | Chris Schubert | Packaging and publishing updates |
 
 
