@@ -1,16 +1,18 @@
 {
-    "name": "Unity.Postprocessing.Editor",
-    "references": [
-        "Unity.Postprocessing.Runtime"
-    ],
-    "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": []
+  "name": "Unity.Postprocessing.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:d60799ab2a985554ea1a39cd38695018"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

@@ -1,15 +1,18 @@
 {
     "name": "Unity.Postprocessing.Runtime.Tests",
+    "rootNamespace": "",
     "references": [
-        "Unity.Postprocessing.Runtime"
+        "GUID:d60799ab2a985554ea1a39cd38695018"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+    "includePlatforms": [
+        "Editor"
     ],
-    "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
-    ],
-    "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
