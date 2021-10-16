@@ -93,8 +93,8 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && ((mode.value == VignetteMode.Classic && intensity.value > 0f)
-                    ||  (mode.value == VignetteMode.Masked && opacity.value > 0f && mask.value != null));
+                && (((mode.value == VignetteMode.Classic) && (intensity.value > 0f))
+                    ||  ((mode.value == VignetteMode.Masked) && (opacity.value > 0f) && (mask.value != null)));
         }
     }
 
@@ -111,7 +111,7 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 sheet.properties.SetFloat(ShaderIDs.Vignette_Mode, 0f);
                 sheet.properties.SetVector(ShaderIDs.Vignette_Center, settings.center.value);
-                float roundness = (1f - settings.roundness.value) * 6f + settings.roundness.value;
+                float roundness = ((1f - settings.roundness.value) * 6f) + settings.roundness.value;
                 sheet.properties.SetVector(ShaderIDs.Vignette_Settings, new Vector4(settings.intensity.value * 3f, settings.smoothness.value * 5f, roundness, settings.rounded.value ? 1f : 0f));
             }
             else // Masked

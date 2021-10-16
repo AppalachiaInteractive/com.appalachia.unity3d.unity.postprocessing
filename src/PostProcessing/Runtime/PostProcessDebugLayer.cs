@@ -142,7 +142,7 @@ namespace UnityEngine.Rendering.PostProcessing
             /// <summary>
             /// Should we remap depth to a linear range?
             /// </summary>
-            public bool linearDepth = false;
+            public bool linearDepth;
 
             /// <summary>
             /// The intensity of motion vector colors.
@@ -243,7 +243,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// <param name="pass">The pass to use for the property sheet</param>
         public void PushDebugOverlay(CommandBuffer cmd, RenderTargetIdentifier source, PropertySheet sheet, int pass)
         {
-            if (debugOverlayTarget == null || !debugOverlayTarget.IsCreated() || debugOverlayTarget.width != frameWidth || debugOverlayTarget.height != frameHeight)
+            if ((debugOverlayTarget == null) || !debugOverlayTarget.IsCreated() || (debugOverlayTarget.width != frameWidth) || (debugOverlayTarget.height != frameHeight))
             {
                 RuntimeUtilities.Destroy(debugOverlayTarget);
 

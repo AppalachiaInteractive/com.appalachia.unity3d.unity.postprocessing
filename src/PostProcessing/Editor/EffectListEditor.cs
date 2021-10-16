@@ -256,7 +256,7 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             // Huh. Hack to keep foldout state on the next element...
             bool nextFoldoutState = false;
-            if (id < m_Editors.Count - 1)
+            if (id < (m_Editors.Count - 1))
                 nextFoldoutState = m_Editors[id + 1].baseProperty.isExpanded;
 
             // Remove from the cached editors list

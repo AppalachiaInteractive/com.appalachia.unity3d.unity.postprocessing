@@ -34,7 +34,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 && !RuntimeUtilities.scriptableRenderPipelineActive
                 && context.resources.shaders.deferredFog
                 && context.resources.shaders.deferredFog.isSupported
-                && context.camera.actualRenderingPath == RenderingPath.DeferredShading;  // In forward fog is already done at shader level
+                && (context.camera.actualRenderingPath == RenderingPath.DeferredShading);  // In forward fog is already done at shader level
         }
 
         internal void Render(PostProcessRenderContext context)

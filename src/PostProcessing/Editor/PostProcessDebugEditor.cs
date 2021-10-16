@@ -92,7 +92,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 DoOverlayGUI(DebugOverlay.ColorBlindnessSimulation, m_ColorBlindness, m_ColorBlindnessStrength);
 
                 // Special cases
-                if (m_Overlay.intValue == (int)DebugOverlay.NANTracker && m_Target.postProcessLayer.stopNaNPropagation)
+                if ((m_Overlay.intValue == (int)DebugOverlay.NANTracker) && m_Target.postProcessLayer.stopNaNPropagation)
                     EditorGUILayout.HelpBox("Disable \"Stop NaN Propagation\" in the Post-process layer or NaNs will be overwritten!", MessageType.Warning);
 
                 EditorGUI.indentLevel--;
@@ -117,7 +117,7 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             EditorGUILayout.PropertyField(prop, content);
 
-            if (settings == null || settings.Length == 0)
+            if ((settings == null) || (settings.Length == 0))
                 return;
 
             if (prop.boolValue)
@@ -134,7 +134,7 @@ namespace UnityEditor.Rendering.PostProcessing
             if (m_Overlay.intValue != (int)overlay)
                 return;
 
-            if (settings == null || settings.Length == 0)
+            if ((settings == null) || (settings.Length == 0))
                 return;
 
             foreach (var p in settings)

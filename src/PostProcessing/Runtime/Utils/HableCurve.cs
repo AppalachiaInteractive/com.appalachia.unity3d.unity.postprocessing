@@ -23,9 +23,9 @@ namespace UnityEngine.Rendering.PostProcessing
                 // log(0) is undefined but our function should evaluate to 0. There are better ways to handle this,
                 // but it's doing it the slow way here for clarity.
                 if (x0 > 0)
-                    y0 = Mathf.Exp(lnA + B * Mathf.Log(x0));
+                    y0 = Mathf.Exp(lnA + (B * Mathf.Log(x0)));
 
-                return y0 * scaleY + offsetY;
+                return (y0 * scaleY) + offsetY;
             }
         }
 
@@ -268,7 +268,7 @@ namespace UnityEngine.Rendering.PostProcessing
         void SolveAB(out float lnA, out float B, float x0, float y0, float m)
         {
             B = (m * x0) / y0;
-            lnA = Mathf.Log(y0) - B * Mathf.Log(x0);
+            lnA = Mathf.Log(y0) - (B * Mathf.Log(x0));
         }
 
         // Convert to y=mx+b
@@ -282,14 +282,14 @@ namespace UnityEngine.Rendering.PostProcessing
             else
                 m = dy / dx;
 
-            b = y0 - x0 * m;
+            b = y0 - (x0 * m);
         }
 
         // f(x) = (mx+b)^g
         // f'(x) = gm(mx+b)^(g-1)
         float EvalDerivativeLinearGamma(float m, float b, float g, float x)
         {
-            float ret = g * m * Mathf.Pow(m * x + b, g - 1f);
+            float ret = g * m * Mathf.Pow((m * x) + b, g - 1f);
             return ret;
         }
 

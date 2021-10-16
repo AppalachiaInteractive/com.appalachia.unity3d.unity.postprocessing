@@ -64,7 +64,7 @@ namespace UnityEditor.Rendering.PostProcessing
             float indentOffset = EditorGUI.indentLevel * 15f;
             var lineRect = GUILayoutUtility.GetRect(1, EditorGUIUtility.singleLineHeight);
             var labelRect = new Rect(lineRect.x, lineRect.y, EditorGUIUtility.labelWidth - indentOffset, lineRect.height);
-            var fieldRect = new Rect(labelRect.xMax, lineRect.y, lineRect.width - labelRect.width - buttonWidth * (showCopy ? 2 : 1), lineRect.height);
+            var fieldRect = new Rect(labelRect.xMax, lineRect.y, lineRect.width - labelRect.width - (buttonWidth * (showCopy ? 2 : 1)), lineRect.height);
             var buttonNewRect = new Rect(fieldRect.xMax, lineRect.y, buttonWidth, lineRect.height);
             var buttonCopyRect = new Rect(buttonNewRect.xMax, lineRect.y, buttonWidth, lineRect.height);
 
@@ -139,7 +139,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             EditorGUILayout.Space();
 
-            if (m_Profile.objectReferenceValue == null && !m_Target.HasInstantiatedProfile())
+            if ((m_Profile.objectReferenceValue == null) && !m_Target.HasInstantiatedProfile())
             {
                 if (assetHasChanged)
                     m_EffectList.Clear(); // Asset wasn't null before, do some cleanup
@@ -148,7 +148,7 @@ namespace UnityEditor.Rendering.PostProcessing
             }
             else
             {
-                if (assetHasChanged || profileRef != m_EffectList.asset) //Refresh when the user just dragged in a new asset, or when it was instantiated by code.
+                if (assetHasChanged || (profileRef != m_EffectList.asset)) //Refresh when the user just dragged in a new asset, or when it was instantiated by code.
                     RefreshEffectListEditor(profileRef);
 
                 if (!multiEdit)

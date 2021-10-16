@@ -30,7 +30,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && shutterAngle.value > 0f
+                && (shutterAngle.value > 0f)
             #if UNITY_EDITOR
                 // Don't render motion blur preview when the editor is not playing as it can in some
                 // cases results in ugly artifacts (i.e. when resizing the game view).
@@ -96,11 +96,11 @@ namespace UnityEngine.Rendering.PostProcessing
             cmd.BeginSample("MotionBlur");
 
             // Calculate the maximum blur radius in pixels.
-            int maxBlurPixels = (int)(kMaxBlurRadius * context.height / 100);
+            int maxBlurPixels = (int)((kMaxBlurRadius * context.height) / 100);
 
             // Calculate the TileMax size.
             // It should be a multiple of 8 and larger than maxBlur.
-            int tileSize = ((maxBlurPixels - 1) / 8 + 1) * 8;
+            int tileSize = (((maxBlurPixels - 1) / 8) + 1) * 8;
 
             // Pass 1 - Velocity/depth packing
             var velocityScale = settings.shutterAngle / 360f;
@@ -130,7 +130,7 @@ namespace UnityEngine.Rendering.PostProcessing
             cmd.ReleaseTemporaryRT(tile4);
 
             // Pass 5 - Fourth TileMax filter (reduce to tileSize)
-            var tileMaxOffs = Vector2.one * (tileSize / 8f - 1f) * -0.5f;
+            var tileMaxOffs = Vector2.one * ((tileSize / 8f) - 1f) * -0.5f;
             sheet.properties.SetVector(ShaderIDs.TileMaxOffs, tileMaxOffs);
             sheet.properties.SetFloat(ShaderIDs.TileMaxLoop, (int)(tileSize / 8f));
 

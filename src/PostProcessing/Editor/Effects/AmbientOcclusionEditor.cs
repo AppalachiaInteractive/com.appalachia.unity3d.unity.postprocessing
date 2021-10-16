@@ -32,7 +32,7 @@ namespace UnityEditor.Rendering.PostProcessing
             PropertyField(m_Mode);
             int aoMode = m_Mode.value.intValue;
 
-            if (RuntimeUtilities.scriptableRenderPipelineActive && aoMode == (int)AmbientOcclusionMode.ScalableAmbientObscurance)
+            if (RuntimeUtilities.scriptableRenderPipelineActive && (aoMode == (int)AmbientOcclusionMode.ScalableAmbientObscurance))
             {
                 EditorGUILayout.HelpBox("Scalable ambient obscurance doesn't work with scriptable render pipelines.", MessageType.Warning);
                 return;

@@ -82,7 +82,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 var rt = RenderTexture.GetTemporary((int)(size * scale), (int)(size * scale), 0, RenderTextureFormat.ARGB32, kReadWrite);
                 s_Material.SetFloat("_Offset", offset);
                 s_Material.SetFloat("_DisabledState", overrideState ? 1f : 0.5f);
-                s_Material.SetVector("_Resolution", new Vector2(size * scale, size * scale / 2f));
+                s_Material.SetVector("_Resolution", new Vector2(size * scale, (size * scale) / 2f));
                 Graphics.Blit(null, rt, s_Material, EditorGUIUtility.isProSkin ? 0 : 1);
                 RenderTexture.active = oldRT;
 
@@ -91,7 +91,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
                 var thumbSize = Styling.wheelThumbSize;
                 var thumbSizeH = thumbSize / 2f;
-                Styling.wheelThumb.Draw(new Rect(wheelRect.x + hsize + thumbPos.x - thumbSizeH.x, wheelRect.y + hsize + thumbPos.y - thumbSizeH.y, thumbSize.x, thumbSize.y), false, false, false, false);
+                Styling.wheelThumb.Draw(new Rect((wheelRect.x + hsize + thumbPos.x) - thumbSizeH.x, (wheelRect.y + hsize + thumbPos.y) - thumbSizeH.y, thumbSize.x, thumbSize.y), false, false, false, false);
             }
 
             // Input
@@ -144,7 +144,7 @@ namespace UnityEditor.Rendering.PostProcessing
             // Title
             var areaRect = GUILayoutUtility.GetRect(1f, 17f);
             var labelSize = Styling.wheelLabel.CalcSize(title);
-            var labelRect = new Rect(areaRect.x + areaRect.width / 2 - labelSize.x / 2, areaRect.y, labelSize.x, labelSize.y);
+            var labelRect = new Rect((areaRect.x + (areaRect.width / 2)) - (labelSize.x / 2), areaRect.y, labelSize.x, labelSize.y);
             GUI.Label(labelRect, title, Styling.wheelLabel);
 
             // Override checkbox
@@ -158,7 +158,7 @@ namespace UnityEditor.Rendering.PostProcessing
             var id = GUIUtility.GetControlID(k_ThumbHash, FocusType.Passive, bounds);
             var mousePos = e.mousePosition;
 
-            if (e.type == EventType.MouseDown && GUIUtility.hotControl == 0 && bounds.Contains(mousePos))
+            if ((e.type == EventType.MouseDown) && (GUIUtility.hotControl == 0) && bounds.Contains(mousePos))
             {
                 if (e.button == 0)
                 {
@@ -180,14 +180,14 @@ namespace UnityEditor.Rendering.PostProcessing
                     m_ResetState = true;
                 }
             }
-            else if (e.type == EventType.MouseDrag && e.button == 0 && GUIUtility.hotControl == id)
+            else if ((e.type == EventType.MouseDrag) && (e.button == 0) && (GUIUtility.hotControl == id))
             {
                 e.Use();
                 GUI.changed = true;
                 m_CursorPos += e.delta * GlobalSettings.trackballSensitivity;
                 GetWheelHueSaturation(m_CursorPos.x, m_CursorPos.y, radius, out hsv.x, out hsv.y);
             }
-            else if (e.rawType == EventType.MouseUp && e.button == 0 && GUIUtility.hotControl == id)
+            else if ((e.rawType == EventType.MouseUp) && (e.button == 0) && (GUIUtility.hotControl == id))
             {
                 e.Use();
                 GUIUtility.hotControl = 0;
@@ -200,9 +200,9 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             float dx = (x - radius) / radius;
             float dy = (y - radius) / radius;
-            float d = Mathf.Sqrt(dx * dx + dy * dy);
+            float d = Mathf.Sqrt((dx * dx) + (dy * dy));
             hue = Mathf.Atan2(dx, -dy);
-            hue = 1f - ((hue > 0) ? hue : (Mathf.PI * 2f) + hue) / (Mathf.PI * 2f);
+            hue = 1f - (((hue > 0) ? hue : (Mathf.PI * 2f) + hue) / (Mathf.PI * 2f));
             saturation = Mathf.Clamp01(d);
         }
     }

@@ -164,7 +164,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             bool state = enabled.value
-                && intensity.value > 0f;
+                && (intensity.value > 0f);
 
             if (mode.value == AmbientOcclusionMode.ScalableAmbientObscurance)
             {
@@ -229,7 +229,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             var camera = context.camera;
             return settings.ambientOnly.value
-                && camera.actualRenderingPath == RenderingPath.DeferredShading
+                && (camera.actualRenderingPath == RenderingPath.DeferredShading)
                 && camera.allowHDR;
         }
 

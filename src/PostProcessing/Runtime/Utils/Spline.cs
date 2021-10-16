@@ -77,7 +77,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
             var length = curve.length;
 
-            if (m_Loop && length > 1)
+            if (m_Loop && (length > 1))
             {
                 if (m_InternalLoopingCurve == null)
                     m_InternalLoopingCurve = new AnimationCurve();
@@ -108,7 +108,7 @@ namespace UnityEngine.Rendering.PostProcessing
             if (length == 0)
                 return m_ZeroValue;
 
-            if (!m_Loop || length == 1)
+            if (!m_Loop || (length == 1))
                 return curve.Evaluate(t);
 
             return m_InternalLoopingCurve.Evaluate(t);
@@ -140,7 +140,7 @@ namespace UnityEngine.Rendering.PostProcessing
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + curve.GetHashCode(); // Not implemented in Unity, so it'll always return the same value :(
+                hash = (hash * 23) + curve.GetHashCode(); // Not implemented in Unity, so it'll always return the same value :(
                 return hash;
             }
         }

@@ -77,7 +77,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && SystemInfo.graphicsShaderLevel >= 35;
+                && (SystemInfo.graphicsShaderLevel >= 35);
         }
     }
 
@@ -139,7 +139,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             // Estimate the allowable maximum radius of CoC from the kernel
             // size (the equation below was empirically derived).
-            float radiusInPixels = (float)settings.kernelSize.value * 4f + 6f;
+            float radiusInPixels = ((float)settings.kernelSize.value * 4f) + 6f;
 
             // Applying a 5% limit to the CoC radius to keep the size of
             // TileMax/NeighborMax small enough.
@@ -150,7 +150,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             var rt = m_CoCHistoryTextures[eye][id];
 
-            if (m_ResetHistory || rt == null || !rt.IsCreated() || rt.width != context.width || rt.height != context.height)
+            if (m_ResetHistory || (rt == null) || !rt.IsCreated() || (rt.width != context.width) || (rt.height != context.height))
             {
                 RenderTexture.ReleaseTemporary(rt);
 
@@ -176,7 +176,7 @@ namespace UnityEngine.Rendering.PostProcessing
             var f = settings.focalLength.value / 1000f;
             var s1 = Mathf.Max(settings.focusDistance.value, f);
             var aspect = (float)context.screenWidth / (float)context.screenHeight;
-            var coeff = f * f / (settings.aperture.value * (s1 - f) * scaledFilmHeight * 2f);
+            var coeff = (f * f) / (settings.aperture.value * (s1 - f) * scaledFilmHeight * 2f);
             var maxCoC = CalculateMaxCoCRadius(context.screenHeight);
 
             var sheet = context.propertySheets.Get(context.resources.shaders.depthOfField);

@@ -61,11 +61,11 @@ namespace UnityEditor.Rendering.PostProcessing
                     // builtin resources, thus the check for null
                     if (importer != null)
                     {
-                        bool valid = importer.anisoLevel == 0
-                            && importer.mipmapEnabled == false
-                            && importer.alphaSource == TextureImporterAlphaSource.FromGrayScale
-                            && importer.textureCompression == TextureImporterCompression.Uncompressed
-                            && importer.wrapMode == TextureWrapMode.Clamp;
+                        bool valid = (importer.anisoLevel == 0)
+                            && (importer.mipmapEnabled == false)
+                            && (importer.alphaSource == TextureImporterAlphaSource.FromGrayScale)
+                            && (importer.textureCompression == TextureImporterCompression.Uncompressed)
+                            && (importer.wrapMode == TextureWrapMode.Clamp);
 
                         if (!valid)
                             EditorUtilities.DrawFixMeBox("Invalid mask import settings.", () => SetMaskImportSettings(importer));

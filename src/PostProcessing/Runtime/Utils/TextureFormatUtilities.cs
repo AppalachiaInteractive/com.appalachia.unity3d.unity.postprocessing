@@ -127,7 +127,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
             var attributes = (ObsoleteAttribute[])fieldInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false);
-            return attributes != null && attributes.Length > 0;
+            return (attributes != null) && (attributes.Length > 0);
         }
 
         /// <summary>

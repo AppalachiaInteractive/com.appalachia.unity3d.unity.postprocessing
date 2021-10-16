@@ -37,7 +37,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && intensity.value > 0f;
+                && (intensity.value > 0f);
         }
     }
 
@@ -77,7 +77,7 @@ namespace UnityEngine.Rendering.PostProcessing
             }
 
             var sheet = context.uberSheet;
-            bool fastMode = settings.fastMode || SystemInfo.graphicsDeviceType == GraphicsDeviceType.OpenGLES2;
+            bool fastMode = settings.fastMode || (SystemInfo.graphicsDeviceType == GraphicsDeviceType.OpenGLES2);
 
             sheet.EnableKeyword(fastMode
                 ? "CHROMATIC_ABERRATION_LOW"

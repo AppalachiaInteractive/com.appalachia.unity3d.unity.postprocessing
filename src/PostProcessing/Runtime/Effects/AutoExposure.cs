@@ -112,7 +112,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         void CheckTexture(int eye, int id)
         {
-            if (m_AutoExposurePool[eye][id] == null || !m_AutoExposurePool[eye][id].IsCreated())
+            if ((m_AutoExposurePool[eye][id] == null) || !m_AutoExposurePool[eye][id].IsCreated())
             {
                 m_AutoExposurePool[eye][id] = new RenderTexture(1, 1, 0, RenderTextureFormat.RFloat) { enableRandomWrite = true };
                 m_AutoExposurePool[eye][id].Create();
@@ -145,7 +145,7 @@ namespace UnityEngine.Rendering.PostProcessing
             bool firstFrame = m_ResetHistory || !Application.isPlaying;
             string adaptation = null;
 
-            if (firstFrame || settings.eyeAdaptation.value == EyeAdaptation.Fixed)
+            if (firstFrame || (settings.eyeAdaptation.value == EyeAdaptation.Fixed))
                 adaptation = "KAutoExposureAvgLuminance_fixed";
             else
                 adaptation = "KAutoExposureAvgLuminance_progressive";

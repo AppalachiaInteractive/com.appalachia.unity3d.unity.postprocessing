@@ -158,7 +158,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 int mask = m_VolumeLayer.intValue;
                 if (mask == 0)
                     EditorGUILayout.HelpBox("No layer has been set, the trigger will never be affected by volumes.", MessageType.Warning);
-                else if (mask == -1 || ((mask & 1) != 0))
+                else if ((mask == -1) || ((mask & 1) != 0))
                     EditorGUILayout.HelpBox("Do not use \"Everything\" or \"Default\" as a layer mask as it will slow down the volume blending process! Put post-processing volumes in their own dedicated layer for best performances.", MessageType.Warning);
             }
             EditorGUI.indentLevel--;
@@ -180,7 +180,7 @@ namespace UnityEditor.Rendering.PostProcessing
                         EditorGUILayout.HelpBox("TAA requires Unity 2017.3+ for Single-pass stereo rendering support.", MessageType.Warning);
                     #endif
                     #if UNITY_2017_3_OR_NEWER
-                    if (m_TargetCameraComponent != null && m_TargetCameraComponent.allowDynamicResolution)
+                    if ((m_TargetCameraComponent != null) && m_TargetCameraComponent.allowDynamicResolution)
                         EditorGUILayout.HelpBox("TAA is not supported with Dynamic Resolution.", MessageType.Warning);
                     #endif
 
@@ -196,7 +196,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
                     EditorGUILayout.PropertyField(m_SmaaQuality);
 
-                    if (m_SmaaQuality.intValue != (int)SubpixelMorphologicalAntialiasing.Quality.Low && EditorUtilities.isTargetingConsolesOrMobiles)
+                    if ((m_SmaaQuality.intValue != (int)SubpixelMorphologicalAntialiasing.Quality.Low) && EditorUtilities.isTargetingConsolesOrMobiles)
                         EditorGUILayout.HelpBox("For performance reasons it is recommended to use Low Quality on mobile and console platforms.", MessageType.Warning);
                 }
                 else if (m_AntialiasingMode.intValue == (int)PostProcessLayer.Antialiasing.FastApproximateAntialiasing)
@@ -215,7 +215,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
         void DoFog(Camera camera)
         {
-            if (camera == null || camera.actualRenderingPath != RenderingPath.DeferredShading)
+            if ((camera == null) || (camera.actualRenderingPath != RenderingPath.DeferredShading))
                 return;
 
             EditorGUILayout.LabelField(EditorUtilities.GetContent("Deferred Fog"), EditorStyles.boldLabel);
@@ -397,7 +397,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             if (mode == ExportMode.DisablePost)
                 m_Target.enabled = false;
-            else if (mode == ExportMode.BreakBeforeColorGradingLinear || mode == ExportMode.BreakBeforeColorGradingLog)
+            else if ((mode == ExportMode.BreakBeforeColorGradingLinear) || (mode == ExportMode.BreakBeforeColorGradingLog))
                 m_Target.breakBeforeColorGrading = true;
 
             camera.targetTexture = target;

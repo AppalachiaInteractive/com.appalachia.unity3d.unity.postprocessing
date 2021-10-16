@@ -47,7 +47,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
             bool reset = false;
 
-            if (m_Result == null || !m_Result.IsCreated())
+            if ((m_Result == null) || !m_Result.IsCreated())
             {
                 // Initial allocation
                 m_Result = context.GetScreenSpaceTemporaryRT(0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
@@ -56,7 +56,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 reset = true;
             }
-            else if (m_Result.width != context.width || m_Result.height != context.height)
+            else if ((m_Result.width != context.width) || (m_Result.height != context.height))
             {
                 // Release and reallocate
                 m_Result.Release();
@@ -90,7 +90,7 @@ namespace UnityEngine.Rendering.PostProcessing
             // In forward fog is applied at the object level in the grometry pass so we need to
             // apply it to AO as well or it'll drawn on top of the fog effect.
             // Not needed in Deferred.
-            if (context.camera.actualRenderingPath == RenderingPath.Forward && RenderSettings.fog)
+            if ((context.camera.actualRenderingPath == RenderingPath.Forward) && RenderSettings.fog)
             {
                 sheet.EnableKeyword("APPLY_FORWARD_FOG");
                 sheet.properties.SetVector(

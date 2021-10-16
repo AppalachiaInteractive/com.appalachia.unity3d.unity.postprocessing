@@ -93,7 +93,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && intensity.value > 0f;
+                && (intensity.value > 0f);
         }
     }
 
@@ -161,15 +161,15 @@ namespace UnityEngine.Rendering.PostProcessing
 
             // Determine the iteration count
             int s = Mathf.Max(tw, th);
-            float logs = Mathf.Log(s, 2f) + Mathf.Min(settings.diffusion.value, 10f) - 10f;
+            float logs = (Mathf.Log(s, 2f) + Mathf.Min(settings.diffusion.value, 10f)) - 10f;
             int logs_i = Mathf.FloorToInt(logs);
             int iterations = Mathf.Clamp(logs_i, 1, k_MaxPyramidSize);
-            float sampleScale = 0.5f + logs - logs_i;
+            float sampleScale = (0.5f + logs) - logs_i;
             sheet.properties.SetFloat(ShaderIDs.SampleScale, sampleScale);
 
             // Prefiltering parameters
             float lthresh = Mathf.GammaToLinearSpace(settings.threshold.value);
-            float knee = lthresh * settings.softKnee.value + 1e-5f;
+            float knee = (lthresh * settings.softKnee.value) + 1e-5f;
             var threshold = new Vector4(lthresh, lthresh - knee, knee * 2f, 0.25f / knee);
             sheet.properties.SetVector(ShaderIDs.Threshold, threshold);
             float lclamp = Mathf.GammaToLinearSpace(settings.clamp.value);
@@ -192,7 +192,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 cmd.BlitFullscreenTriangle(lastDown, mipDown, sheet, pass);
 
                 lastDown = mipDown;
-                tw_stereo = (singlePassDoubleWide && ((tw_stereo / 2) % 2 > 0)) ? 1 + tw_stereo / 2 : tw_stereo / 2;
+                tw_stereo = (singlePassDoubleWide && (((tw_stereo / 2) % 2) > 0)) ? 1 + (tw_stereo / 2) : tw_stereo / 2;
                 tw_stereo = Mathf.Max(tw_stereo, 1);
                 th = Mathf.Max(th / 2, 1);
             }

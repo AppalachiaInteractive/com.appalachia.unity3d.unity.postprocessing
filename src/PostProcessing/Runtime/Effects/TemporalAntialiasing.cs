@@ -82,12 +82,12 @@ namespace UnityEngine.Rendering.PostProcessing
         /// <returns><c>true</c> if the effect is currently enabled and supported</returns>
         public bool IsSupported()
         {
-            return SystemInfo.supportedRenderTargetCount >= 2
+            return (SystemInfo.supportedRenderTargetCount >= 2)
                 && SystemInfo.supportsMotionVectors
 #if !UNITY_2017_3_OR_NEWER
                 && !RuntimeUtilities.isVREnabled
 #endif
-                && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2;
+                && (SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2);
         }
 
         internal DepthTextureMode GetCameraFlags()
@@ -201,7 +201,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
             var rt = m_HistoryTextures[activeEye][id];
 
-            if (m_ResetHistory || rt == null || !rt.IsCreated())
+            if (m_ResetHistory || (rt == null) || !rt.IsCreated())
             {
                 RenderTexture.ReleaseTemporary(rt);
 
@@ -213,7 +213,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 context.command.BlitFullscreenTriangle(context.source, rt);
             }
-            else if (rt.width != context.width || rt.height != context.height)
+            else if ((rt.width != context.width) || (rt.height != context.height))
             {
                 // On size change, simply copy the old history to the new one. This looks better
                 // than completely discarding the history and seeing a few aliased frames.

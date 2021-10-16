@@ -79,14 +79,14 @@ namespace UnityEngine.Rendering.PostProcessing
         /// Should this volume be applied to the whole scene?
         /// </summary>
         [Tooltip("Check this box to mark this volume as global. This volume's Profile will be applied to the whole Scene.")]
-        public bool isGlobal = false;
+        public bool isGlobal;
 
         /// <summary>
         /// The outer distance to start blending from. A value of 0 means no blending and the volume
         /// overrides will be applied immediatly upon entry.
         /// </summary>
         [Min(0f), Tooltip("The distance (from the attached Collider) to start blending from. A value of 0 means there will be no blending and the Volume overrides will be applied immediatly upon entry to the attached Collider.")]
-        public float blendDistance = 0f;
+        public float blendDistance;
 
         /// <summary>
         /// The total weight of this volume in the scene. 0 means it won't do anything, 1 means full
@@ -100,7 +100,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// are supported.
         /// </summary>
         [Tooltip("The volume priority in the stack. A higher value means higher priority. Negative values are supported.")]
-        public float priority = 0f;
+        public float priority;
 
         /// <summary>
         /// Returns the first instantiated <see cref="PostProcessProfile"/> assigned to the volume.
@@ -210,7 +210,7 @@ namespace UnityEngine.Rendering.PostProcessing
             var colliders = m_TempColliders;
             GetComponents(colliders);
 
-            if (isGlobal || colliders == null)
+            if (isGlobal || (colliders == null))
                 return;
 
 #if UNITY_EDITOR
@@ -246,13 +246,13 @@ namespace UnityEngine.Rendering.PostProcessing
                 {
                     var c = (BoxCollider)collider;
                     Gizmos.DrawCube(c.center, c.size);
-                    Gizmos.DrawWireCube(c.center, c.size + invScale * blendDistance * 4f);
+                    Gizmos.DrawWireCube(c.center, c.size + (invScale * blendDistance * 4f));
                 }
                 else if (type == typeof(SphereCollider))
                 {
                     var c = (SphereCollider)collider;
                     Gizmos.DrawSphere(c.center, c.radius);
-                    Gizmos.DrawWireSphere(c.center, c.radius + invScale.x * blendDistance * 2f);
+                    Gizmos.DrawWireSphere(c.center, c.radius + (invScale.x * blendDistance * 2f));
                 }
                 else if (type == typeof(MeshCollider))
                 {
@@ -264,7 +264,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
                     // Mesh pivot should be centered or this won't work
                     Gizmos.DrawMesh(c.sharedMesh);
-                    Gizmos.DrawWireMesh(c.sharedMesh, Vector3.zero, Quaternion.identity, Vector3.one + invScale * blendDistance * 4f);
+                    Gizmos.DrawWireMesh(c.sharedMesh, Vector3.zero, Quaternion.identity, Vector3.one + (invScale * blendDistance * 4f));
                 }
 
                 // Nothing for capsule (DrawCapsule isn't exposed in Gizmo), terrain, wheel and

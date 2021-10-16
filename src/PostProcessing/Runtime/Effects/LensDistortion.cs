@@ -56,7 +56,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             return enabled.value
                 && !Mathf.Approximately(intensity, 0f)
-                && (intensityX > 0f || intensityY > 0f)
+                && ((intensityX > 0f) || (intensityY > 0f))
                 && !context.stereoActive;
         }
     }

@@ -22,18 +22,18 @@ namespace UnityEngine.Rendering.PostProcessing
         // The arrays below are reused between frames to reduce GC allocation.
         readonly float[] m_SampleThickness =
         {
-            Mathf.Sqrt(1f - 0.2f * 0.2f),
-            Mathf.Sqrt(1f - 0.4f * 0.4f),
-            Mathf.Sqrt(1f - 0.6f * 0.6f),
-            Mathf.Sqrt(1f - 0.8f * 0.8f),
-            Mathf.Sqrt(1f - 0.2f * 0.2f - 0.2f * 0.2f),
-            Mathf.Sqrt(1f - 0.2f * 0.2f - 0.4f * 0.4f),
-            Mathf.Sqrt(1f - 0.2f * 0.2f - 0.6f * 0.6f),
-            Mathf.Sqrt(1f - 0.2f * 0.2f - 0.8f * 0.8f),
-            Mathf.Sqrt(1f - 0.4f * 0.4f - 0.4f * 0.4f),
-            Mathf.Sqrt(1f - 0.4f * 0.4f - 0.6f * 0.6f),
-            Mathf.Sqrt(1f - 0.4f * 0.4f - 0.8f * 0.8f),
-            Mathf.Sqrt(1f - 0.6f * 0.6f - 0.6f * 0.6f)
+            Mathf.Sqrt(1f - (0.2f * 0.2f)),
+            Mathf.Sqrt(1f - (0.4f * 0.4f)),
+            Mathf.Sqrt(1f - (0.6f * 0.6f)),
+            Mathf.Sqrt(1f - (0.8f * 0.8f)),
+            Mathf.Sqrt(1f - (0.2f * 0.2f) - (0.2f * 0.2f)),
+            Mathf.Sqrt(1f - (0.2f * 0.2f) - (0.4f * 0.4f)),
+            Mathf.Sqrt(1f - (0.2f * 0.2f) - (0.6f * 0.6f)),
+            Mathf.Sqrt(1f - (0.2f * 0.2f) - (0.8f * 0.8f)),
+            Mathf.Sqrt(1f - (0.4f * 0.4f) - (0.4f * 0.4f)),
+            Mathf.Sqrt(1f - (0.4f * 0.4f) - (0.6f * 0.6f)),
+            Mathf.Sqrt(1f - (0.4f * 0.4f) - (0.8f * 0.8f)),
+            Mathf.Sqrt(1f - (0.6f * 0.6f) - (0.6f * 0.6f))
         };
 
         readonly float[] m_InvThicknessTable = new float[12];
@@ -333,7 +333,7 @@ namespace UnityEngine.Rendering.PostProcessing
             // TanHalfFovH: Radius of sphere in depth units if its center lies at Z = 1
             // ScreenspaceDiameter: Diameter of sample sphere in pixel units
             // ScreenspaceDiameter / BufferWidth: Ratio of the screen width that the sphere actually covers
-            float thicknessMultiplier = 2f * tanHalfFovH * kScreenspaceDiameter / sourceSize.x;
+            float thicknessMultiplier = (2f * tanHalfFovH * kScreenspaceDiameter) / sourceSize.x;
             if (RuntimeUtilities.isSinglePassStereoEnabled)
                 thicknessMultiplier *= 2f;
 
@@ -398,9 +398,9 @@ namespace UnityEngine.Rendering.PostProcessing
 
             cmd.DispatchCompute(
                 cs, kernel,
-                ((int)sourceSize.x + (int)xsize - 1) / (int)xsize,
-                ((int)sourceSize.y + (int)ysize - 1) / (int)ysize,
-                ((int)sourceSize.z + (int)zsize - 1) / (int)zsize
+                (((int)sourceSize.x + (int)xsize) - 1) / (int)xsize,
+                (((int)sourceSize.y + (int)ysize) - 1) / (int)ysize,
+                (((int)sourceSize.z + (int)zsize) - 1) / (int)zsize
             );
         }
 
@@ -425,7 +425,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
 
             float stepSize = 1920f / lowResDepthSize.x;
-            float bTolerance = 1f - Mathf.Pow(10f, m_Settings.blurTolerance.value) * stepSize;
+            float bTolerance = 1f - (Mathf.Pow(10f, m_Settings.blurTolerance.value) * stepSize);
             bTolerance *= bTolerance;
             float uTolerance = Mathf.Pow(10f, m_Settings.upsampleTolerance.value);
             float noiseFilterWeight = 1f / (Mathf.Pow(10f, m_Settings.noiseFilterTolerance.value) + uTolerance);
@@ -482,9 +482,9 @@ namespace UnityEngine.Rendering.PostProcessing
 
         void CheckAOTexture(PostProcessRenderContext context)
         {
-            bool AOUpdateNeeded = m_AmbientOnlyAO == null || !m_AmbientOnlyAO.IsCreated() || m_AmbientOnlyAO.width != context.width || m_AmbientOnlyAO.height != context.height;
+            bool AOUpdateNeeded = (m_AmbientOnlyAO == null) || !m_AmbientOnlyAO.IsCreated() || (m_AmbientOnlyAO.width != context.width) || (m_AmbientOnlyAO.height != context.height);
 #if UNITY_2017_3_OR_NEWER
-            AOUpdateNeeded = AOUpdateNeeded || m_AmbientOnlyAO.useDynamicScale != context.camera.allowDynamicResolution;
+            AOUpdateNeeded = AOUpdateNeeded || (m_AmbientOnlyAO.useDynamicScale != context.camera.allowDynamicResolution);
 #endif
             if (AOUpdateNeeded)
             {
@@ -519,7 +519,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
             // In Forward mode, fog is applied at the object level in the grometry pass so we need
             // to apply it to AO as well or it'll drawn on top of the fog effect.
-            if (context.camera.actualRenderingPath == RenderingPath.Forward && RenderSettings.fog)
+            if ((context.camera.actualRenderingPath == RenderingPath.Forward) && RenderSettings.fog)
             {
                 m_PropertySheet.EnableKeyword("APPLY_FORWARD_FOG");
                 m_PropertySheet.properties.SetVector(

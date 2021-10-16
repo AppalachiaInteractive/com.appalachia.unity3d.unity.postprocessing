@@ -164,8 +164,8 @@ namespace UnityEngine.Rendering.PostProcessing
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + overrideState.GetHashCode();
-                hash = hash * 23 + value.GetHashCode();
+                hash = (hash * 23) + overrideState.GetHashCode();
+                hash = (hash * 23) + value.GetHashCode();
                 return hash;
             }
         }
@@ -205,7 +205,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </remarks>
         public override void Interp(float from, float to, float t)
         {
-            value = from + (to - from) * t;
+            value = from + ((to - @from) * t);
         }
     }
 
@@ -234,7 +234,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             // Int snapping interpolation. Don't use this for enums as they don't necessarily have
             // contiguous values. Use the default interpolator instead (same as bool).
-            value = (int)(from + (to - from) * t);
+            value = (int)(from + ((to - @from) * t));
         }
     }
 
@@ -271,10 +271,10 @@ namespace UnityEngine.Rendering.PostProcessing
             // HSV and LCH but they have some downsides that make them not work correctly in all
             // situations, so we stick with RGB lerping for now, at least its behavior is
             // predictable despite looking desaturated when `t ~= 0.5` and it's faster anyway.
-            value.r = from.r + (to.r - from.r) * t;
-            value.g = from.g + (to.g - from.g) * t;
-            value.b = from.b + (to.b - from.b) * t;
-            value.a = from.a + (to.a - from.a) * t;
+            value.r = from.r + ((to.r - @from.r) * t);
+            value.g = from.g + ((to.g - @from.g) * t);
+            value.b = from.b + ((to.b - @from.b) * t);
+            value.a = from.a + ((to.a - @from.a) * t);
         }
 
         /// <summary>
@@ -311,8 +311,8 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </remarks>
         public override void Interp(Vector2 from, Vector2 to, float t)
         {
-            value.x = from.x + (to.x - from.x) * t;
-            value.y = from.y + (to.y - from.y) * t;
+            value.x = from.x + ((to.x - @from.x) * t);
+            value.y = from.y + ((to.y - @from.y) * t);
         }
 
         /// <summary>
@@ -359,9 +359,9 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </remarks>
         public override void Interp(Vector3 from, Vector3 to, float t)
         {
-            value.x = from.x + (to.x - from.x) * t;
-            value.y = from.y + (to.y - from.y) * t;
-            value.z = from.z + (to.z - from.z) * t;
+            value.x = from.x + ((to.x - @from.x) * t);
+            value.y = from.y + ((to.y - @from.y) * t);
+            value.z = from.z + ((to.z - @from.z) * t);
         }
 
         /// <summary>
@@ -408,10 +408,10 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </remarks>
         public override void Interp(Vector4 from, Vector4 to, float t)
         {
-            value.x = from.x + (to.x - from.x) * t;
-            value.y = from.y + (to.y - from.y) * t;
-            value.z = from.z + (to.z - from.z) * t;
-            value.w = from.w + (to.w - from.w) * t;
+            value.x = from.x + ((to.x - @from.x) * t);
+            value.y = from.y + ((to.y - @from.y) * t);
+            value.z = from.z + ((to.z - @from.z) * t);
+            value.w = from.w + ((to.w - @from.w) * t);
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </remarks>
         public override void Interp(Spline from, Spline to, float t)
         {
-            if (from == null || to == null)
+            if ((@from == null) || (to == null))
             {
                 base.Interp(from, to, t);
                 return;
@@ -494,7 +494,7 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 float a = from.cachedData[i];
                 float b = to.cachedData[i];
-                value.cachedData[i] = a + (b - a) * t;
+                value.cachedData[i] = a + ((b - a) * t);
             }
         }
     }
@@ -556,14 +556,14 @@ namespace UnityEngine.Rendering.PostProcessing
         public override void Interp(Texture from, Texture to, float t)
         {
             // Both are null, do nothing
-            if (from == null && to == null)
+            if ((@from == null) && (to == null))
             {
                 value = null;
                 return;
             }
 
             // Both aren't null we're ready to blend
-            if (from != null && to != null)
+            if ((@from != null) && (to != null))
             {
                 value = TextureLerper.instance.Lerp(from, to, t);
                 return;
@@ -602,7 +602,7 @@ namespace UnityEngine.Rendering.PostProcessing
                         if (to == null) to = defaultTexture;
 
                         // Fail safe in case the lut size is incorrect
-                        if (from.width != to.width || from.height != to.height)
+                        if ((@from.width != to.width) || (@from.height != to.height))
                         {
                             value = null;
                             return;

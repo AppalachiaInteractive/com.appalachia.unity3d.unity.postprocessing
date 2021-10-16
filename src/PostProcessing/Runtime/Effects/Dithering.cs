@@ -7,13 +7,13 @@ namespace UnityEngine.Rendering.PostProcessing
     [Serializable]
     internal sealed class Dithering
     {
-        int m_NoiseTextureIndex = 0;
+        int m_NoiseTextureIndex;
         System.Random m_Random = new System.Random(1234);
 
         internal void Render(PostProcessRenderContext context)
         {
             var blueNoise = context.resources.blueNoise64;
-            Assert.IsTrue(blueNoise != null && blueNoise.Length > 0);
+            Assert.IsTrue((blueNoise != null) && (blueNoise.Length > 0));
 
         #if POSTFX_DEBUG_STATIC_DITHERING // Used by QA for automated testing
             m_NoiseTextureIndex = 0;

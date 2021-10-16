@@ -39,7 +39,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 .GetField(group.ToString())
                 .GetCustomAttributes(typeof(ObsoleteAttribute), false);
 
-            return attrs != null && attrs.Length > 0;
+            return (attrs != null) && (attrs.Length > 0);
         }
     }
 }

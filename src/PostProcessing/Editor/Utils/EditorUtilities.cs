@@ -25,16 +25,16 @@ namespace UnityEditor.Rendering.PostProcessing
             get
             {
                 var t = EditorUserBuildSettings.activeBuildTarget;
-                return t == BuildTarget.PS4
+                return (t == BuildTarget.PS4)
 #if UNITY_PS5
                     || t == BuildTarget.PS5
 #endif
-                    || t == BuildTarget.XboxOne
+                    || (t == BuildTarget.XboxOne)
 #if UNITY_GAMECORE
                     || t == BuildTarget.GameCoreXboxSeries
                     || t == BuildTarget.GameCoreXboxOne
 #endif
-                    || t == BuildTarget.Switch;
+                    || (t == BuildTarget.Switch);
             }
         }
 
@@ -46,9 +46,9 @@ namespace UnityEditor.Rendering.PostProcessing
             get
             {
                 var t = EditorUserBuildSettings.activeBuildTarget;
-                return t == BuildTarget.Android
-                    || t == BuildTarget.iOS
-                    || t == BuildTarget.tvOS
+                return (t == BuildTarget.Android)
+                    || (t == BuildTarget.iOS)
+                    || (t == BuildTarget.tvOS)
 #if !UNITY_2018_2_OR_NEWER
                     || t == BuildTarget.Tizen
 #endif
@@ -129,7 +129,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 var s = textAndTooltip.Split('|');
                 content = new GUIContent(s[0]);
 
-                if (s.Length > 1 && !string.IsNullOrEmpty(s[1]))
+                if ((s.Length > 1) && !string.IsNullOrEmpty(s[1]))
                     content.tooltip = s[1];
 
                 s_GUIContentCache.Add(textAndTooltip, content);
@@ -225,7 +225,7 @@ namespace UnityEditor.Rendering.PostProcessing
             state = GUI.Toggle(foldoutRect, state, GUIContent.none, EditorStyles.foldout);
 
             var e = Event.current;
-            if (e.type == EventType.MouseDown && backgroundRect.Contains(e.mousePosition) && e.button == 0)
+            if ((e.type == EventType.MouseDown) && backgroundRect.Contains(e.mousePosition) && (e.button == 0))
             {
                 state = !state;
                 e.Use();
@@ -357,8 +357,8 @@ namespace UnityEditor.Rendering.PostProcessing
 
         static bool CanPaste(PostProcessEffectSettings target)
         {
-            return s_ClipboardContent != null
-                && s_ClipboardContent.GetType() == target.GetType();
+            return (s_ClipboardContent != null)
+                && (s_ClipboardContent.GetType() == target.GetType());
         }
     }
 }

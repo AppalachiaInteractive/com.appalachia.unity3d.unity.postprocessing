@@ -112,7 +112,7 @@ namespace UnityEngine.Rendering.PostProcessing
                     }
                 }
 
-                if (postProcessLayer == null || !postProcessLayer.enabled)
+                if ((postProcessLayer == null) || !postProcessLayer.enabled)
                     return;
 
                 // Monitors
@@ -130,7 +130,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             m_CmdAfterEverything.Clear();
 
-            if (postProcessLayer == null || !postProcessLayer.enabled || !postProcessLayer.debugLayer.debugOverlayActive)
+            if ((postProcessLayer == null) || !postProcessLayer.enabled || !postProcessLayer.debugLayer.debugOverlayActive)
                 return;
 
             m_CmdAfterEverything.Blit(postProcessLayer.debugLayer.debugOverlayTarget, BuiltinRenderTextureType.CameraTarget);
@@ -138,7 +138,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         void OnGUI()
         {
-            if (postProcessLayer == null || !postProcessLayer.enabled)
+            if ((postProcessLayer == null) || !postProcessLayer.enabled)
                 return;
 
             // Some SRPs don't unbind render targets and leave them as-is
@@ -154,7 +154,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         void DrawMonitor(ref Rect rect, Monitor monitor, bool enabled)
         {
-            if (!enabled || monitor.output == null)
+            if (!enabled || (monitor.output == null))
                 return;
 
             rect.width = monitor.output.width;

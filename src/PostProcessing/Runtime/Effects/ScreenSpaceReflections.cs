@@ -143,10 +143,10 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled
-                && context.camera.actualRenderingPath == RenderingPath.DeferredShading
+                && (context.camera.actualRenderingPath == RenderingPath.DeferredShading)
                 && SystemInfo.supportsMotionVectors
                 && SystemInfo.supportsComputeShaders
-                && SystemInfo.copyTextureSupport > CopyTextureSupport.None
+                && (SystemInfo.copyTextureSupport > CopyTextureSupport.None)
                 && context.resources.shaders.screenSpaceReflections
                 && context.resources.shaders.screenSpaceReflections.isSupported
                 && context.resources.computeShaders.gaussianDownsample;
@@ -193,7 +193,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         internal void CheckRT(ref RenderTexture rt, int width, int height, FilterMode filterMode, bool useMipMap)
         {
-            if (rt == null || !rt.IsCreated() || rt.width != width || rt.height != height)
+            if ((rt == null) || !rt.IsCreated() || (rt.width != width) || (rt.height != height))
             {
                 if (rt != null)
                 {
@@ -296,7 +296,7 @@ namespace UnityEngine.Rendering.PostProcessing
             cmd.ReleaseTemporaryRT(ShaderIDs.Test);
 
             // Pre-cache mipmaps ids
-            if (m_MipIDs == null || m_MipIDs.Length == 0)
+            if ((m_MipIDs == null) || (m_MipIDs.Length == 0))
             {
                 m_MipIDs = new int[kMaxLods];
 

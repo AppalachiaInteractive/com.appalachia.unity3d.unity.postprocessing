@@ -185,7 +185,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     EditorGUILayout.HelpBox("ColorSpace in project settings is set to Gamma, HDR color grading won't look correct. Switch to Linear or use LDR color grading mode instead.", MessageType.Warning);
             }
 
-            if (m_GradingMode.overrideState.boolValue && gradingMode == GradingMode.External)
+            if (m_GradingMode.overrideState.boolValue && (gradingMode == GradingMode.External))
             {
                 if (!SystemInfo.supports3DRenderTextures || !SystemInfo.supportsComputeShaders)
                     EditorGUILayout.HelpBox("HDR color grading requires compute shader & 3D render texture support.", MessageType.Warning);
@@ -224,13 +224,13 @@ namespace UnityEditor.Rendering.PostProcessing
                 if (lut.GetType() == typeof(Texture3D))
                 {
                     var o = (Texture3D)lut;
-                    if (o.width == o.height && o.height == o.depth)
+                    if ((o.width == o.height) && (o.height == o.depth))
                         return;
                 }
                 else if (lut.GetType() == typeof(RenderTexture))
                 {
                     var o = (RenderTexture)lut;
-                    if (o.width == o.height && o.height == o.volumeDepth)
+                    if ((o.width == o.height) && (o.height == o.volumeDepth))
                         return;
                 }
 
@@ -358,17 +358,17 @@ namespace UnityEditor.Rendering.PostProcessing
                 // builtin resources, thus the check for null
                 if (importer != null)
                 {
-                    bool valid = importer.anisoLevel == 0
-                        && importer.mipmapEnabled == false
-                        && importer.sRGBTexture == false
-                        && importer.textureCompression == TextureImporterCompression.Uncompressed
-                        && importer.wrapMode == TextureWrapMode.Clamp;
+                    bool valid = (importer.anisoLevel == 0)
+                        && (importer.mipmapEnabled == false)
+                        && (importer.sRGBTexture == false)
+                        && (importer.textureCompression == TextureImporterCompression.Uncompressed)
+                        && (importer.wrapMode == TextureWrapMode.Clamp);
 
                     if (!valid)
                         EditorUtilities.DrawFixMeBox("Invalid LUT import settings.", () => SetLutImportSettings(importer));
                 }
 
-                if (lut.width != lut.height * lut.height)
+                if (lut.width != (lut.height * lut.height))
                 {
                     EditorGUILayout.HelpBox("The Lookup Texture size is invalid. Width should be Height * Height.", MessageType.Error);
                 }
@@ -429,7 +429,7 @@ namespace UnityEditor.Rendering.PostProcessing
             Handles.DrawSolidRectangleWithOutline(m_RectVertices, Color.white * 0.1f, Color.white * 0.4f);
 
             // Vertical guides
-            if (endPoint < m_CustomToneCurveRect.width / 3)
+            if (endPoint < (m_CustomToneCurveRect.width / 3))
             {
                 int steps = Mathf.CeilToInt(endPoint);
                 for (var i = 1; i < steps; i++)
@@ -443,7 +443,7 @@ namespace UnityEditor.Rendering.PostProcessing
             var vcount = 0;
             while (vcount < k_CustomToneCurveResolution)
             {
-                float x = endPoint * vcount / (k_CustomToneCurveResolution - 1);
+                float x = (endPoint * vcount) / (k_CustomToneCurveResolution - 1);
                 float y = m_HableCurve.Eval(x);
 
                 if (y < k_CustomToneCurveRangeY)
@@ -458,7 +458,7 @@ namespace UnityEditor.Rendering.PostProcessing
                         var v1 = m_CurveVertices[vcount - 2];
                         var v2 = m_CurveVertices[vcount - 1];
                         var clip = (m_CustomToneCurveRect.y - v1.y) / (v2.y - v1.y);
-                        m_CurveVertices[vcount - 1] = v1 + (v2 - v1) * clip;
+                        m_CurveVertices[vcount - 1] = v1 + ((v2 - v1) * clip);
                     }
                     break;
                 }
@@ -611,9 +611,9 @@ namespace UnityEditor.Rendering.PostProcessing
                     // Background
                     EditorGUI.DrawRect(rect, new Color(0.15f, 0.15f, 0.15f, 1f));
 
-                    if (curveEditingId == 4 || curveEditingId == 5)
+                    if ((curveEditingId == 4) || (curveEditingId == 5))
                         DrawBackgroundTexture(innerRect, 0);
-                    else if (curveEditingId == 6 || curveEditingId == 7)
+                    else if ((curveEditingId == 6) || (curveEditingId == 7))
                         DrawBackgroundTexture(innerRect, 1);
 
                     // Bounds
@@ -674,7 +674,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     infoRect.width = 100f;
                     infoRect.height = 30f;
 
-                    if (selection.curve != null && selection.keyframeIndex > -1)
+                    if ((selection.curve != null) && (selection.keyframeIndex > -1))
                     {
                         var key = selection.keyframe.Value;
                         GUI.Label(infoRect, string.Format("{0}\n{1}", key.time.ToString("F3"), key.value.ToString("F3")), Styling.preLabel);
@@ -719,7 +719,7 @@ namespace UnityEditor.Rendering.PostProcessing
             var lastRect = GUILayoutUtility.GetLastRect();
             var e = Event.current;
 
-            if (e.type == EventType.MouseDown && e.button == 0 && lastRect.Contains(e.mousePosition))
+            if ((e.type == EventType.MouseDown) && (e.button == 0) && lastRect.Contains(e.mousePosition))
             {
                 var menu = new GenericMenu();
 
@@ -728,7 +728,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     if (i == 4)
                         menu.AddSeparator("");
 
-                    if (hdr && i < 4)
+                    if (hdr && (i < 4))
                         menu.AddDisabledItem(s_Curves[i]);
                     else
                     {

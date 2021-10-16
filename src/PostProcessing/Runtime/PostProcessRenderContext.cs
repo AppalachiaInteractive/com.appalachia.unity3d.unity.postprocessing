@@ -278,7 +278,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// otherwise</returns>
         public bool IsTemporalAntialiasingActive()
         {
-            return antialiasing == PostProcessLayer.Antialiasing.TemporalAntialiasing
+            return (antialiasing == PostProcessLayer.Antialiasing.TemporalAntialiasing)
                 && !isSceneView
                 && temporalAntialiasing.IsSupported();
         }
@@ -370,7 +370,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 desc.height = heightOverride;
 
             //intermediates in VR are unchanged
-            if (stereoActive && desc.dimension == Rendering.TextureDimension.Tex2DArray)
+            if (stereoActive && (desc.dimension == Rendering.TextureDimension.Tex2DArray))
                 desc.dimension = Rendering.TextureDimension.Tex2D;
 
 #if UNITY_2019_1_OR_NEWER

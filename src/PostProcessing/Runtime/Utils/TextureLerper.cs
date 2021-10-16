@@ -67,7 +67,7 @@ namespace UnityEngine.Rendering.PostProcessing
             for (i = 0; i < len; i++)
             {
                 var r = m_Recycled[i];
-                if (r.width == w && r.height == h && r.volumeDepth == d && r.format == format && r.enableRandomWrite == enableRandomWrite && (!force3D || (r.dimension == TextureDimension.Tex3D)))
+                if ((r.width == w) && (r.height == h) && (r.volumeDepth == d) && (r.format == format) && (r.enableRandomWrite == enableRandomWrite) && (!force3D || (r.dimension == TextureDimension.Tex3D)))
                 {
                     rt = r;
                     break;
@@ -113,7 +113,7 @@ namespace UnityEngine.Rendering.PostProcessing
             if (t >= 1f) return to;
 
             bool is3D = from is Texture3D
-                || (from is RenderTexture && ((RenderTexture)from).volumeDepth > 1);
+                || (from is RenderTexture && (((RenderTexture)@from).volumeDepth > 1));
 
             RenderTexture rt;
 
@@ -170,7 +170,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 return from;
 
             bool is3D = from is Texture3D
-                || (from is RenderTexture && ((RenderTexture)from).volumeDepth > 1);
+                || (from is RenderTexture && (((RenderTexture)@from).volumeDepth > 1));
 
             RenderTexture rt;
 

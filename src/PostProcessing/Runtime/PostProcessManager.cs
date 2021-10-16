@@ -121,7 +121,7 @@ namespace UnityEngine.Rendering.PostProcessing
             foreach (var volume in volumes)
             {
                 // Skip disabled volumes and volumes without any data or weight
-                if ((skipDisabled && !volume.enabled) || volume.profileRef == null || (skipZeroWeight && volume.weight <= 0f))
+                if ((skipDisabled && !volume.enabled) || (volume.profileRef == null) || (skipZeroWeight && (volume.weight <= 0f)))
                     continue;
 
                 // Global volume always have influence
@@ -237,7 +237,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         internal void SetLayerDirty(int layer)
         {
-            Assert.IsTrue(layer >= 0 && layer <= k_MaxLayerCount, "Invalid layer bit");
+            Assert.IsTrue((layer >= 0) && (layer <= k_MaxLayerCount), "Invalid layer bit");
 
             foreach (var kvp in m_SortedVolumes)
             {
@@ -250,7 +250,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         internal void UpdateVolumeLayer(PostProcessVolume volume, int prevLayer, int newLayer)
         {
-            Assert.IsTrue(prevLayer >= 0 && prevLayer <= k_MaxLayerCount, "Invalid layer bit");
+            Assert.IsTrue((prevLayer >= 0) && (prevLayer <= k_MaxLayerCount), "Invalid layer bit");
             Unregister(volume, prevLayer);
             Register(volume, newLayer);
         }
@@ -336,7 +336,7 @@ namespace UnityEngine.Rendering.PostProcessing
 #endif
 
                 // Skip disabled volumes and volumes without any data or weight
-                if (!volume.enabled || volume.profileRef == null || volume.weight <= 0f)
+                if (!volume.enabled || (volume.profileRef == null) || (volume.weight <= 0f))
                     continue;
 
                 var settings = volume.profileRef.settings;
@@ -438,7 +438,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 var temp = volumes[i];
                 int j = i - 1;
 
-                while (j >= 0 && volumes[j].priority > temp.priority)
+                while ((j >= 0) && (volumes[j].priority > temp.priority))
                 {
                     volumes[j + 1] = volumes[j];
                     j--;

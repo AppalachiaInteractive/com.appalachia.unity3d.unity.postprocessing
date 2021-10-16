@@ -41,7 +41,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && intensity.value > 0f;
+                && (intensity.value > 0f);
         }
     }
 
@@ -73,7 +73,7 @@ namespace UnityEngine.Rendering.PostProcessing
 #endif
 
             // Generate the grain lut for the current frame first
-            if (m_GrainLookupRT == null || !m_GrainLookupRT.IsCreated())
+            if ((m_GrainLookupRT == null) || !m_GrainLookupRT.IsCreated())
             {
                 RuntimeUtilities.Destroy(m_GrainLookupRT);
 

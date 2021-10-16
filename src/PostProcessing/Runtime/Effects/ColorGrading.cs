@@ -416,13 +416,13 @@ namespace UnityEngine.Rendering.PostProcessing
             var gradingMode = settings.gradingMode.value;
             var supportComputeTex3D = SystemInfo.supports3DRenderTextures
                 && SystemInfo.supportsComputeShaders
-                && context.resources.computeShaders.lut3DBaker != null
-                && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLCore
-                && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES3;
+                && (context.resources.computeShaders.lut3DBaker != null)
+                && (SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLCore)
+                && (SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES3);
 
             if (gradingMode == GradingMode.External)
                 RenderExternalPipeline3D(context);
-            else if (gradingMode == GradingMode.HighDefinitionRange && supportComputeTex3D)
+            else if ((gradingMode == GradingMode.HighDefinitionRange) && supportComputeTex3D)
                 RenderHDRPipeline3D(context);
             else if (gradingMode == GradingMode.HighDefinitionRange)
                 RenderHDRPipeline2D(context);
@@ -485,9 +485,9 @@ namespace UnityEngine.Rendering.PostProcessing
                 cmd.SetComputeVectorParam(compute, "_ColorBalance", colorBalance);
                 cmd.SetComputeVectorParam(compute, "_ColorFilter", settings.colorFilter.value);
 
-                float hue = settings.hueShift.value / 360f;         // Remap to [-0.5;0.5]
-                float sat = settings.saturation.value / 100f + 1f;  // Remap to [0;2]
-                float con = settings.contrast.value / 100f + 1f;    // Remap to [0;2]
+                float hue = settings.hueShift.value / 360f;          // Remap to [-0.5;0.5]
+                float sat = (settings.saturation.value / 100f) + 1f; // Remap to [0;2]
+                float con = (settings.contrast.value / 100f) + 1f;   // Remap to [0;2]
                 cmd.SetComputeVectorParam(compute, "_HueSatCon", new Vector4(hue, sat, con, 0f));
 
                 var channelMixerR = new Vector4(settings.mixerRedOutRedIn, settings.mixerRedOutGreenIn, settings.mixerRedOutBlueIn, 0f);
@@ -562,9 +562,9 @@ namespace UnityEngine.Rendering.PostProcessing
                 lutSheet.properties.SetVector(ShaderIDs.ColorBalance, colorBalance);
                 lutSheet.properties.SetVector(ShaderIDs.ColorFilter, settings.colorFilter.value);
 
-                float hue = settings.hueShift.value / 360f;         // Remap to [-0.5;0.5]
-                float sat = settings.saturation.value / 100f + 1f;  // Remap to [0;2]
-                float con = settings.contrast.value / 100f + 1f;    // Remap to [0;2]
+                float hue = settings.hueShift.value / 360f;          // Remap to [-0.5;0.5]
+                float sat = (settings.saturation.value / 100f) + 1f; // Remap to [0;2]
+                float con = (settings.contrast.value / 100f) + 1f;   // Remap to [0;2]
                 lutSheet.properties.SetVector(ShaderIDs.HueSatCon, new Vector3(hue, sat, con));
 
                 var channelMixerR = new Vector3(settings.mixerRedOutRedIn, settings.mixerRedOutGreenIn, settings.mixerRedOutBlueIn);
@@ -641,9 +641,9 @@ namespace UnityEngine.Rendering.PostProcessing
                 lutSheet.properties.SetVector(ShaderIDs.ColorBalance, colorBalance);
                 lutSheet.properties.SetVector(ShaderIDs.ColorFilter, settings.colorFilter.value);
 
-                float hue = settings.hueShift.value / 360f;         // Remap to [-0.5;0.5]
-                float sat = settings.saturation.value / 100f + 1f;  // Remap to [0;2]
-                float con = settings.contrast.value / 100f + 1f;    // Remap to [0;2]
+                float hue = settings.hueShift.value / 360f;          // Remap to [-0.5;0.5]
+                float sat = (settings.saturation.value / 100f) + 1f; // Remap to [0;2]
+                float con = (settings.contrast.value / 100f) + 1f;   // Remap to [0;2]
                 lutSheet.properties.SetVector(ShaderIDs.HueSatCon, new Vector3(hue, sat, con));
 
                 var channelMixerR = new Vector3(settings.mixerRedOutRedIn, settings.mixerRedOutGreenIn, settings.mixerRedOutBlueIn);
@@ -667,7 +667,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 context.command.BeginSample("LdrColorGradingLut2D");
 
                 var userLut = settings.ldrLut.value;
-                if (userLut == null || userLut.width != userLut.height * userLut.height)
+                if ((userLut == null) || (userLut.width != (userLut.height * userLut.height)))
                 {
                     context.command.BlitFullscreenTriangle(BuiltinRenderTextureType.None, m_InternalLdrLut, lutSheet, (int)Pass.LutGenLDRFromScratch);
                 }
@@ -690,7 +690,7 @@ namespace UnityEngine.Rendering.PostProcessing
         void CheckInternalLogLut()
         {
             // Check internal lut state, (re)create it if needed
-            if (m_InternalLogLut == null || !m_InternalLogLut.IsCreated())
+            if ((m_InternalLogLut == null) || !m_InternalLogLut.IsCreated())
             {
                 RuntimeUtilities.Destroy(m_InternalLogLut);
 
@@ -715,7 +715,7 @@ namespace UnityEngine.Rendering.PostProcessing
         void CheckInternalStripLut()
         {
             // Check internal lut state, (re)create it if needed
-            if (m_InternalLdrLut == null || !m_InternalLdrLut.IsCreated())
+            if ((m_InternalLdrLut == null) || !m_InternalLdrLut.IsCreated())
             {
                 RuntimeUtilities.Destroy(m_InternalLdrLut);
 

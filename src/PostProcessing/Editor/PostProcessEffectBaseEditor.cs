@@ -172,7 +172,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             bool invalidProp = false;
 
-            if (decorator != null && !decorator.IsAutoProperty())
+            if ((decorator != null) && !decorator.IsAutoProperty())
             {
                 if (decorator.OnGUI(property.value, property.overrideState, title, attribute))
                     return;
@@ -191,7 +191,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 // Property
                 using (new EditorGUI.DisabledScope(!property.overrideState.boolValue))
                 {
-                    if (decorator != null && !invalidProp)
+                    if ((decorator != null) && !invalidProp)
                     {
                         if (decorator.OnGUI(property.value, property.overrideState, title, attribute))
                             return;
@@ -199,8 +199,8 @@ namespace UnityEditor.Rendering.PostProcessing
 
                     // Default unity field
                     if (property.value.hasVisibleChildren
-                        && property.value.propertyType != SerializedPropertyType.Vector2
-                        && property.value.propertyType != SerializedPropertyType.Vector3)
+                        && (property.value.propertyType != SerializedPropertyType.Vector2)
+                        && (property.value.propertyType != SerializedPropertyType.Vector3))
                     {
                         GUILayout.Space(12f);
                         EditorGUILayout.PropertyField(property.value, title, true);

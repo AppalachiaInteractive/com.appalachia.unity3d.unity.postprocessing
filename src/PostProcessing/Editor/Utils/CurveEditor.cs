@@ -360,7 +360,7 @@ namespace UnityEditor.Rendering.PostProcessing
             // Make sure selection is correct (undo can break it)
             bool isCurrentlySelectedCurve = curve == m_SelectedCurve;
 
-            if (isCurrentlySelectedCurve && m_SelectedKeyframeIndex >= length)
+            if (isCurrentlySelectedCurve && (m_SelectedKeyframeIndex >= length))
                 m_SelectedKeyframeIndex = -1;
 
             if (!state.editable)
@@ -380,8 +380,8 @@ namespace UnityEditor.Rendering.PostProcessing
                     ? new RectOffset(5, 5, 5, 5)
                     : new RectOffset(6, 6, 6, 6);
 
-                var outTangent = pos + CurveTangentToCanvas(keys[k].outTangent).normalized * 40f;
-                var inTangent = pos - CurveTangentToCanvas(keys[k].inTangent).normalized * 40f;
+                var outTangent = pos + (CurveTangentToCanvas(keys[k].outTangent).normalized * 40f);
+                var inTangent = pos - (CurveTangentToCanvas(keys[k].inTangent).normalized * 40f);
                 var inTangentHitRect = new Rect(inTangent.x - 7f, inTangent.y - 7f, 14f, 14f);
                 var outTangentHitrect = new Rect(outTangent.x - 7f, outTangent.y - 7f, 14f, 14f);
 
@@ -402,13 +402,13 @@ namespace UnityEditor.Rendering.PostProcessing
                         {
                             Handles.color = selectedColor * enabledFactor;
 
-                            if (k > 0 || state.loopInBounds)
+                            if ((k > 0) || state.loopInBounds)
                             {
                                 Handles.DrawAAPolyLine(state.handleWidth, pos, inTangent);
                                 EditorGUI.DrawRect(offset.Remove(inTangentHitRect), selectedColor);
                             }
 
-                            if (k < length - 1 || state.loopInBounds)
+                            if ((k < (length - 1)) || state.loopInBounds)
                             {
                                 Handles.DrawAAPolyLine(state.handleWidth, pos, outTangent);
                                 EditorGUI.DrawRect(offset.Remove(outTangentHitrect), selectedColor);
@@ -421,20 +421,20 @@ namespace UnityEditor.Rendering.PostProcessing
                 if (state.editable)
                 {
                     // Keyframe move
-                    if (m_EditMode == EditMode.Moving && e.type == EventType.MouseDrag && isCurrentlySelectedCurve && isCurrentlySelectedKeyframe)
+                    if ((m_EditMode == EditMode.Moving) && (e.type == EventType.MouseDrag) && isCurrentlySelectedCurve && isCurrentlySelectedKeyframe)
                     {
                         EditMoveKeyframe(animCurve, keys, k);
                     }
 
                     // Tangent editing
-                    if (m_EditMode == EditMode.TangentEdit && e.type == EventType.MouseDrag && isCurrentlySelectedCurve && isCurrentlySelectedKeyframe)
+                    if ((m_EditMode == EditMode.TangentEdit) && (e.type == EventType.MouseDrag) && isCurrentlySelectedCurve && isCurrentlySelectedKeyframe)
                     {
                         bool alreadyBroken = !(Mathf.Approximately(keys[k].inTangent, keys[k].outTangent) || (float.IsInfinity(keys[k].inTangent) && float.IsInfinity(keys[k].outTangent)));
                         EditMoveTangent(animCurve, keys, k, m_TangentEditMode, e.shift || !(alreadyBroken || e.control));
                     }
 
                     // Keyframe selection & context menu
-                    if (e.type == EventType.MouseDown && rect.Contains(e.mousePosition))
+                    if ((e.type == EventType.MouseDown) && rect.Contains(e.mousePosition))
                     {
                         if (hitRect.Contains(e.mousePosition))
                         {
@@ -465,16 +465,16 @@ namespace UnityEditor.Rendering.PostProcessing
                     }
 
                     // Tangent selection & edit mode
-                    if (e.type == EventType.MouseDown && rect.Contains(e.mousePosition))
+                    if ((e.type == EventType.MouseDown) && rect.Contains(e.mousePosition))
                     {
-                        if (inTangentHitRect.Contains(e.mousePosition) && (k > 0 || state.loopInBounds))
+                        if (inTangentHitRect.Contains(e.mousePosition) && ((k > 0) || state.loopInBounds))
                         {
                             SelectKeyframe(curve, k);
                             m_EditMode = EditMode.TangentEdit;
                             m_TangentEditMode = Tangent.In;
                             e.Use();
                         }
-                        else if (outTangentHitrect.Contains(e.mousePosition) && (k < length - 1 || state.loopInBounds))
+                        else if (outTangentHitrect.Contains(e.mousePosition) && ((k < (length - 1)) || state.loopInBounds))
                         {
                             SelectKeyframe(curve, k);
                             m_EditMode = EditMode.TangentEdit;
@@ -484,7 +484,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     }
 
                     // Mouse up - clean up states
-                    if (e.rawType == EventType.MouseUp && m_EditMode != EditMode.None)
+                    if ((e.rawType == EventType.MouseUp) && (m_EditMode != EditMode.None))
                     {
                         m_EditMode = EditMode.None;
                     }
@@ -493,10 +493,10 @@ namespace UnityEditor.Rendering.PostProcessing
                     {
                         EditorGUIUtility.AddCursorRect(hitRect, MouseCursor.MoveArrow);
 
-                        if (k > 0 || state.loopInBounds)
+                        if ((k > 0) || state.loopInBounds)
                             EditorGUIUtility.AddCursorRect(inTangentHitRect, MouseCursor.RotateArrow);
 
-                        if (k < length - 1 || state.loopInBounds)
+                        if ((k < (length - 1)) || state.loopInBounds)
                             EditorGUIUtility.AddCursorRect(outTangentHitrect, MouseCursor.RotateArrow);
                     }
                 }
@@ -540,7 +540,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     {
                         m_SelectedCurve = prop;
 
-                        if (e.clickCount == 2 && e.button == 0)
+                        if ((e.clickCount == 2) && (e.button == 0))
                         {
                             // Create a keyframe on double-click on this curve
                             EditCreateKeyframe(animCurve, hit, true, state.zeroKeyConstantValue);
@@ -566,7 +566,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     }
                 }
 
-                if (e.clickCount == 2 && e.button == 0 && m_SelectedCurve == null)
+                if ((e.clickCount == 2) && (e.button == 0) && (m_SelectedCurve == null))
                 {
                     // Create a keyframe on every curve on double-click
                     foreach (var curve in m_Curves)
@@ -581,7 +581,7 @@ namespace UnityEditor.Rendering.PostProcessing
                         SaveCurve(prop, animCurve);
                     }
                 }
-                else if (!used && e.button == 1)
+                else if (!used && (e.button == 1))
                 {
                     // Global context menu
                     var menu = new GenericMenu();
@@ -594,14 +594,14 @@ namespace UnityEditor.Rendering.PostProcessing
             }
 
             // Delete selected key(s)
-            if (e.type == EventType.KeyDown && (e.keyCode == KeyCode.Delete || e.keyCode == KeyCode.Backspace))
+            if ((e.type == EventType.KeyDown) && ((e.keyCode == KeyCode.Delete) || (e.keyCode == KeyCode.Backspace)))
             {
-                if (m_SelectedKeyframeIndex != -1 && m_SelectedCurve != null)
+                if ((m_SelectedKeyframeIndex != -1) && (m_SelectedCurve != null))
                 {
                     var animCurve = m_SelectedCurve.animationCurveValue;
                     var length = animCurve.length;
 
-                    if (m_Curves[m_SelectedCurve].minPointCount < length && length >= 0)
+                    if ((m_Curves[m_SelectedCurve].minPointCount < length) && (length >= 0))
                     {
                         EditDeleteKeyframe(animCurve, m_SelectedKeyframeIndex);
                         m_SelectedKeyframeIndex = -1;
@@ -701,7 +701,7 @@ namespace UnityEditor.Rendering.PostProcessing
             if (keyframeIndex > 0)
                 newValue.time = Mathf.Max(keys[keyframeIndex - 1].time + settings.keyTimeClampingDistance, newValue.time);
 
-            if (keyframeIndex < keys.Length - 1)
+            if (keyframeIndex < (keys.Length - 1))
                 newValue.time = Mathf.Min(keys[keyframeIndex + 1].time - settings.keyTimeClampingDistance, newValue.time);
 
             curve.MoveKey(keyframeIndex, newValue);
@@ -725,10 +725,10 @@ namespace UnityEditor.Rendering.PostProcessing
 
             pos -= new Vector3(time, value);
 
-            if (targetTangent == Tangent.In && pos.x > 0f)
+            if ((targetTangent == Tangent.In) && (pos.x > 0f))
                 pos.x = 0f;
 
-            if (targetTangent == Tangent.Out && pos.x < 0f)
+            if ((targetTangent == Tangent.Out) && (pos.x < 0f))
                 pos.x = 0f;
 
             float tangent;
@@ -741,9 +741,9 @@ namespace UnityEditor.Rendering.PostProcessing
             float inTangent = keys[keyframeIndex].inTangent;
             float outTangent = keys[keyframeIndex].outTangent;
 
-            if (targetTangent == Tangent.In || linkTangents)
+            if ((targetTangent == Tangent.In) || linkTangents)
                 inTangent = tangent;
-            if (targetTangent == Tangent.Out || linkTangents)
+            if ((targetTangent == Tangent.Out) || linkTangents)
                 outTangent = tangent;
 
             SetKeyframe(curve, keyframeIndex, new Keyframe(time, value, inTangent, outTangent));
@@ -762,8 +762,8 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             var bounds = settings.bounds;
             var output = new Vector3((position.x - bounds.x) / (bounds.xMax - bounds.x), (position.y - bounds.y) / (bounds.yMax - bounds.y));
-            output.x = output.x * (m_CurveArea.xMax - m_CurveArea.xMin) + m_CurveArea.xMin;
-            output.y = (1f - output.y) * (m_CurveArea.yMax - m_CurveArea.yMin) + m_CurveArea.yMin;
+            output.x = (output.x * (m_CurveArea.xMax - m_CurveArea.xMin)) + m_CurveArea.xMin;
+            output.y = ((1f - output.y) * (m_CurveArea.yMax - m_CurveArea.yMin)) + m_CurveArea.yMin;
             return output;
         }
 
@@ -838,7 +838,7 @@ namespace UnityEditor.Rendering.PostProcessing
             if (next == 0)
                 return 0f;
 
-            if (prev == curve.keys.Length - 1)
+            if (prev == (curve.keys.Length - 1))
                 return 0f;
 
             const float kD = 1e-3f;
@@ -849,7 +849,7 @@ namespace UnityEditor.Rendering.PostProcessing
             float vn = curve.Evaluate(tn);
 
             if (Mathf.Approximately(tn, tp))
-                return (vn - vp > 0f) ? float.PositiveInfinity : float.NegativeInfinity;
+                return ((vn - vp) > 0f) ? float.PositiveInfinity : float.NegativeInfinity;
 
             return (vn - vp) / (tn - tp);
         }

@@ -47,7 +47,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
             sheet.properties.SetVector(ShaderIDs.ScaleOffsetRes, scaleOffsetRes);
 
-            if (context.logLut != null && showCurves)
+            if ((context.logLut != null) && showCurves)
             {
                 sheet.EnableKeyword("COLOR_GRADING_HDR");
                 sheet.properties.SetTexture(ShaderIDs.Lut3D, context.logLut);

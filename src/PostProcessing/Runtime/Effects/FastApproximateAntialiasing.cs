@@ -16,13 +16,13 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </summary>
         [FormerlySerializedAs("mobileOptimized")]
         [Tooltip("Boost performances by lowering the effect quality. This setting is meant to be used on mobile and other low-end platforms but can also provide a nice performance boost on desktops and consoles.")]
-        public bool fastMode = false;
+        public bool fastMode;
 
         /// <summary>
         /// Set this to <c>true</c> if you need to keep the alpha channel untouched. Else it will
         /// use this channel to store internal data used to speed up and improve visual quality.
         /// </summary>
         [Tooltip("Keep alpha channel. This will slightly lower the effect quality but allows rendering against a transparent background.")]
-        public bool keepAlpha = false;
+        public bool keepAlpha;
     }
 }

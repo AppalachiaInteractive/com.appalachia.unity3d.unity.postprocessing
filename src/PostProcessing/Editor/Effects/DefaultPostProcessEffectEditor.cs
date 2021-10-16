@@ -23,9 +23,9 @@ namespace UnityEditor.Rendering.PostProcessing
 
             var fields = target.GetType()
                 .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(t => t.FieldType.IsSubclassOf(typeof(ParameterOverride)) && t.Name != "enabled")
+                .Where(t => t.FieldType.IsSubclassOf(typeof(ParameterOverride)) && (t.Name != "enabled"))
                 .Where(t =>
-                    (t.IsPublic && t.GetCustomAttributes(typeof(NonSerializedAttribute), false).Length == 0)
+                    (t.IsPublic && (t.GetCustomAttributes(typeof(NonSerializedAttribute), false).Length == 0))
                     || (t.GetCustomAttributes(typeof(UnityEngine.SerializeField), false).Length > 0)
                 )
                 .ToList();

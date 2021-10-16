@@ -194,7 +194,7 @@ namespace UnityEngine.Rendering.PostProcessing
                         for (int x = 0; x < size; x++)
                         {
                             var r = x * inv;
-                            pixels[y * width + offset + x] = new Color(r, g, b);
+                            pixels[(y * width) + offset + x] = new Color(r, g, b);
                         }
                     }
                 }
@@ -778,7 +778,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </summary>
         public static bool supportsDeferredShading
         {
-            get { return scriptableRenderPipelineActive || GraphicsSettings.GetShaderMode(BuiltinShaderType.DeferredShading) != BuiltinShaderMode.Disabled; }
+            get { return scriptableRenderPipelineActive || (GraphicsSettings.GetShaderMode(BuiltinShaderType.DeferredShading) != BuiltinShaderMode.Disabled); }
         }
 
         /// <summary>
@@ -787,7 +787,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </summary>
         public static bool supportsDepthNormals
         {
-            get { return scriptableRenderPipelineActive || GraphicsSettings.GetShaderMode(BuiltinShaderType.DepthNormals) != BuiltinShaderMode.Disabled; }
+            get { return scriptableRenderPipelineActive || (GraphicsSettings.GetShaderMode(BuiltinShaderType.DepthNormals) != BuiltinShaderMode.Disabled); }
         }
 
 #if UNITY_EDITOR
@@ -855,7 +855,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// </summary>
         public static bool isAndroidOpenGL
         {
-            get { return Application.platform == RuntimePlatform.Android && SystemInfo.graphicsDeviceType != GraphicsDeviceType.Vulkan; }
+            get { return (Application.platform == RuntimePlatform.Android) && (SystemInfo.graphicsDeviceType != GraphicsDeviceType.Vulkan); }
         }
 
         /// <summary>
@@ -869,7 +869,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 RenderTextureFormat format = RenderTextureFormat.RGB111110Float;
 #if UNITY_EDITOR
                 var target = EditorUserBuildSettings.activeBuildTarget;
-                if (target != BuildTarget.Android && target != BuildTarget.iOS && target != BuildTarget.tvOS && target != BuildTarget.Switch)
+                if ((target != BuildTarget.Android) && (target != BuildTarget.iOS) && (target != BuildTarget.tvOS) && (target != BuildTarget.Switch))
                     return RenderTextureFormat.DefaultHDR;
 #endif // UNITY_EDITOR
                 if (format.IsSupported())
@@ -886,10 +886,10 @@ namespace UnityEngine.Rendering.PostProcessing
         /// <returns><c>true</c> if the format is floating-point, <c>false</c> otherwise</returns>
         public static bool isFloatingPointFormat(RenderTextureFormat format)
         {
-            return format == RenderTextureFormat.DefaultHDR || format == RenderTextureFormat.ARGBHalf || format == RenderTextureFormat.ARGBFloat ||
-                format == RenderTextureFormat.RGFloat || format == RenderTextureFormat.RGHalf ||
-                format == RenderTextureFormat.RFloat || format == RenderTextureFormat.RHalf ||
-                format == RenderTextureFormat.RGB111110Float;
+            return (format == RenderTextureFormat.DefaultHDR) || (format == RenderTextureFormat.ARGBHalf) || (format == RenderTextureFormat.ARGBFloat) ||
+                (format == RenderTextureFormat.RGFloat) || (format == RenderTextureFormat.RGHalf) ||
+                (format == RenderTextureFormat.RFloat) || (format == RenderTextureFormat.RHalf) ||
+                (format == RenderTextureFormat.RGB111110Float);
         }
 
         /// <summary>
@@ -930,15 +930,15 @@ namespace UnityEngine.Rendering.PostProcessing
             // AFAIK resolved depth is only available on D3D11/12 via BuiltinRenderTextureType.ResolvedDepth
             // TODO: Is there more proper way to determine this? What about SRPs?
             var gtype = SystemInfo.graphicsDeviceType;
-            return camera.actualRenderingPath == RenderingPath.DeferredShading &&
-                (gtype == GraphicsDeviceType.Direct3D11
-                    || gtype == GraphicsDeviceType.Direct3D12
+            return (camera.actualRenderingPath == RenderingPath.DeferredShading) &&
+                ((gtype == GraphicsDeviceType.Direct3D11)
+                    || (gtype == GraphicsDeviceType.Direct3D12)
 #if UNITY_GAMECORE
                     || gtype == GraphicsDeviceType.GameCoreXboxSeries
                     || gtype == GraphicsDeviceType.GameCoreXboxOne
 #endif
-                    || gtype == GraphicsDeviceType.XboxOne
-                    || gtype == GraphicsDeviceType.XboxOneD3D12
+                    || (gtype == GraphicsDeviceType.XboxOne)
+                    || (gtype == GraphicsDeviceType.XboxOneD3D12)
                 );
         }
 
@@ -983,7 +983,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// <returns><c>true</c> if the layer is enabled, <c>false</c> otherwise</returns>
         public static bool IsPostProcessingActive(PostProcessLayer layer)
         {
-            return layer != null
+            return (layer != null)
                 && layer.enabled;
         }
 
@@ -995,7 +995,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public static bool IsTemporalAntialiasingActive(PostProcessLayer layer)
         {
             return IsPostProcessingActive(layer)
-                && layer.antialiasingMode == PostProcessLayer.Antialiasing.TemporalAntialiasing
+                && (layer.antialiasingMode == PostProcessLayer.Antialiasing.TemporalAntialiasing)
                 && layer.temporalAntialiasing.IsSupported();
         }
 
@@ -1121,8 +1121,8 @@ namespace UnityEngine.Rendering.PostProcessing
             float vertFov = Math.Abs(planes.top) + Math.Abs(planes.bottom);
             float horizFov = Math.Abs(planes.left) + Math.Abs(planes.right);
 
-            var planeJitter = new Vector2(jitter.x * horizFov / context.screenWidth,
-                jitter.y * vertFov / context.screenHeight);
+            var planeJitter = new Vector2((jitter.x * horizFov) / context.screenWidth,
+                (jitter.y * vertFov) / context.screenHeight);
 
             planes.left += planeJitter.x;
             planes.right += planeJitter.x;

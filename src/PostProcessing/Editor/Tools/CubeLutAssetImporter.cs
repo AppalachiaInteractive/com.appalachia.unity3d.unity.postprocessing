@@ -82,7 +82,7 @@ namespace UnityEditor.Rendering.PostProcessing
                         break;
                     }
 
-                    if (size < 2 || size > 256)
+                    if ((size < 2) || (size > 256))
                     {
                         Debug.LogError("LUT size out of range");
                         break;

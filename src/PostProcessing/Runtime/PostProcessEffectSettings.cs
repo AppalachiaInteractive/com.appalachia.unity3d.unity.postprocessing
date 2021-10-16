@@ -79,7 +79,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             foreach (var prop in parameters)
             {
-                if (excludeEnabled && prop == enabled)
+                if (excludeEnabled && (prop == enabled))
                     continue;
 
                 prop.overrideState = state;
@@ -112,7 +112,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 int hash = 17;
 
                 foreach (var p in parameters)
-                    hash = hash * 23 + p.GetHash();
+                    hash = (hash * 23) + p.GetHash();
 
                 return hash;
             }

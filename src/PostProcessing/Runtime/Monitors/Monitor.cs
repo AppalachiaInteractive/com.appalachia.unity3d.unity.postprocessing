@@ -65,7 +65,7 @@ namespace UnityEngine.Rendering.PostProcessing
         /// <param name="height">The output height.</param>
         protected void CheckOutput(int width, int height)
         {
-            if (output == null || !output.IsCreated() || output.width != width || output.height != height)
+            if ((output == null) || !output.IsCreated() || (output.width != width) || (output.height != height))
             {
                 RuntimeUtilities.Destroy(output);
                 output = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
