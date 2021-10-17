@@ -12,6 +12,13 @@
 ## Releasing
 | Hash | Date | Author | Changes |
 |------|------|--------|---------|
+| fc652641ef7df6f4d1dcae7ab4383c5410ca0b8d | 2021-10-16 | Chris Schubert | More project cleanup and refactoring |
+| 02828281c7c3639f78798044d5ac2070b97d780c | 2021-10-12 | Chris Schubert | Code cleanup and project restructuring |
+
+
+ ## Tag: `v0.1.4`
+| Hash | Date | Author | Changes |
+|------|------|--------|---------|
 | 9898167150608efca67eaab8043ac411571d857e | 2021-09-28 | Chris Schubert | Updating packaging and publishing npm strategy and package.json |
 
 
