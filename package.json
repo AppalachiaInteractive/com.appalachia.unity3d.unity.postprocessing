@@ -1,7 +1,7 @@
 {
   "name": "com.appalachia.unity3d.unity.postprocessing",
   "displayName": "Post Processing Stack v2",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "unity": "2020.3",
   "description": "Post-processing is a generic term for a full-screen image processing effect that occurs after the camera draws the scene but before the scene is rendered on the screen. ",
   "keywords": [
